@@ -16,8 +16,8 @@ export default function Home() {
       </Head>
       <main>
         <div>
-          <p className="text-3xl font-bold underline">
-            Main
+          <p>
+            Main Page
           </p>
         </div>
       </main>
