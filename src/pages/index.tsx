@@ -1,8 +1,8 @@
-import Head from 'next/head'
-import Image from 'next/image'
-import { Inter } from 'next/font/google'
+import Head from "next/head";
+import Image from "next/image";
+import { Inter } from "next/font/google";
 
-const inter = Inter({ subsets: ['latin'] })
+const inter = Inter({ subsets: ["latin"] });
 
 export default function Home() {
   return (
@@ -13,13 +13,20 @@ export default function Home() {
         <meta name="viewport" content="width=device-width, initial-scale=1" />
         <link rel="icon" href="/favicon.ico" />
       </Head>
-      <main>
-        <div>
-          <p>
-            Main Page
-          </p>
-        </div>
+      <main className="grid gap-6 sm:grid-cols-2">
+        <img src="https://picsum.photos/id/237/536/354" alt="Obraz" />
+        <p>
+          Lorem ipsum dolor sit amet, consectetur adipiscing elit. Nam tristique
+          nibh ac massa congue, ac faucibus ex placerat. Aliquam eu fermentum
+          diam, vel tincidunt leo. Quisque euismod risus ligula, posuere
+          malesuada risus mollis ut. Aliquam pulvinar felis ac nibh vehicula,
+          sit amet iaculis lorem aliquet. Duis fringilla augue eget eros cursus,
+          id cursus magna sagittis. Cras sodales interdum lorem, non vulputate
+          quam condimentum et. Curabitur velit purus, bibendum ut sem semper,
+          dapibus malesuada eros. Vestibulum tincidunt nisl non tortor fermentum
+          facilisis.
+        </p>
       </main>
     </>
-  )
+  );
 }
