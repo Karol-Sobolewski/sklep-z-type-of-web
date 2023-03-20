@@ -1,7 +1,5 @@
-"use client";
-
 import Link from "next/link";
-import { useRouter } from "next/navigation";
+import { useRouter } from "next/router";
 const menu = [
   { title: "Strona domowa", path: "/" },
   { title: "O nas", path: "/about" },
@@ -9,7 +7,7 @@ const menu = [
 ];
 
 export default function Navigation() {
-  const router = useRouter();
+  // const router = useRouter();
   return (
     <nav className="dark:text-yellow-400">
       <ul className="flex gap-6">
