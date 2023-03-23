@@ -7,7 +7,7 @@ import Main from "@/components/layout/Main";
 
 const inter = Inter({ subsets: ["latin"] });
 
-export default function About() {
+export default function AboutPage() {
   return (
     <>
       <Head>

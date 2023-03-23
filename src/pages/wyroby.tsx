@@ -1,13 +1,23 @@
 import Head from "next/head";
 import Image from "next/image";
 import { Inter } from "next/font/google";
-import styles from "@/styles/Home.module.css";
-import Link from "next/link";
 import Main from "@/components/layout/Main";
+import ProductBox from "@/components/common/ProductBox";
+import { InferGetStaticPropsType } from "next";
 
 const inter = Inter({ subsets: ["latin"] });
 
-export default function Products() {
+const DATA = {
+  title: `Product 1`,
+  description: `Lorem ipsum dolor sit amet, consectetur adipiscing elit. Nam tristique
+  nibh ac massa congue, ac faucibus ex placerat. Aliquam eu fermentum
+  diam, vel tincidunt leo.`,
+  image: `https://picsum.photos/id/237/536/354`,
+};
+
+export default function ProductsPage({
+  data,
+}: InferGetStaticPropsType<typeof getStaticProps>) {
   return (
     <>
       <Head>
@@ -36,106 +46,12 @@ export default function Products() {
             </p>
           </div>
 
-          <ul className="mt-4 grid gap-4 sm:grid-cols-2 lg:grid-cols-4">
-            <li>
-              <a href="#" className="group block overflow-hidden">
-                <img
-                  src="https://images.unsplash.com/photo-1523381210434-271e8be1f52b?ixlib=rb-1.2.1&ixid=MnwxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8&auto=format&fit=crop&w=1770&q=80"
-                  alt=""
-                  className="h-[350px] w-full object-cover transition duration-500 group-hover:scale-105 sm:h-[450px]"
-                />
-
-                <div className="relative bg-white p-3">
-                  <h3 className="text-xs text-gray-700 group-hover:underline group-hover:underline-offset-4">
-                    Basic Tee
-                  </h3>
-
-                  <p className="mt-2">
-                    <span className="sr-only"> Regular Price </span>
-
-                    <span className="tracking-wider text-gray-900">
-                      {" "}
-                      £24.00 GBP{" "}
-                    </span>
-                  </p>
-                </div>
-              </a>
-            </li>
-
-            <li>
-              <a href="#" className="group block overflow-hidden">
-                <img
-                  src="https://images.unsplash.com/photo-1523381210434-271e8be1f52b?ixlib=rb-1.2.1&ixid=MnwxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8&auto=format&fit=crop&w=1770&q=80"
-                  alt=""
-                  className="h-[350px] w-full object-cover transition duration-500 group-hover:scale-105 sm:h-[450px]"
-                />
-
-                <div className="relative bg-white p-3">
-                  <h3 className="text-xs text-gray-700 group-hover:underline group-hover:underline-offset-4">
-                    Basic Tee
-                  </h3>
-
-                  <p className="mt-2">
-                    <span className="sr-only"> Regular Price </span>
-
-                    <span className="tracking-wider text-gray-900">
-                      {" "}
-                      £24.00 GBP{" "}
-                    </span>
-                  </p>
-                </div>
-              </a>
-            </li>
-
-            <li>
-              <a href="#" className="group block overflow-hidden">
-                <img
-                  src="https://images.unsplash.com/photo-1523381210434-271e8be1f52b?ixlib=rb-1.2.1&ixid=MnwxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8&auto=format&fit=crop&w=1770&q=80"
-                  alt=""
-                  className="h-[350px] w-full object-cover transition duration-500 group-hover:scale-105 sm:h-[450px]"
-                />
-
-                <div className="relative bg-white p-3">
-                  <h3 className="text-xs text-gray-700 group-hover:underline group-hover:underline-offset-4">
-                    Basic Tee
-                  </h3>
-
-                  <p className="mt-2">
-                    <span className="sr-only"> Regular Price </span>
-
-                    <span className="tracking-wider text-gray-900">
-                      {" "}
-                      £24.00 GBP{" "}
-                    </span>
-                  </p>
-                </div>
-              </a>
-            </li>
-
-            <li>
-              <a href="#" className="group block overflow-hidden">
-                <img
-                  src="https://images.unsplash.com/photo-1523381210434-271e8be1f52b?ixlib=rb-1.2.1&ixid=MnwxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8&auto=format&fit=crop&w=1770&q=80"
-                  alt=""
-                  className="h-[350px] w-full object-cover transition duration-500 group-hover:scale-105 sm:h-[450px]"
-                />
-
-                <div className="relative bg-white p-3">
-                  <h3 className="text-xs text-gray-700 group-hover:underline group-hover:underline-offset-4">
-                    Basic Tee
-                  </h3>
-
-                  <p className="mt-2">
-                    <span className="sr-only"> Regular Price </span>
-
-                    <span className="tracking-wider text-gray-900">
-                      {" "}
-                      £24.00 GBP{" "}
-                    </span>
-                  </p>
-                </div>
-              </a>
-            </li>
+          <ul className="mt-4 grid gap-6 grid-col-1 sm:grid-cols-2 lg:grid-cols-4">
+            {data.map((item) => (
+              <li key={item.id}>
+                <ProductBox data={item} />
+              </li>
+            ))}
           </ul>
 
           <ol className="mt-8 flex justify-center gap-1 text-xs font-medium">
@@ -216,4 +132,34 @@ export default function Products() {
       </Main>
     </>
   );
+}
+
+export const getStaticProps = async () => {
+  const res = await fetch(`https://api.escuelajs.co/api/v1/products`);
+  const data: StoreApiResponse[] = await res.json();
+
+  return {
+    props: {
+      data,
+    },
+  };
+};
+
+export interface StoreApiResponse {
+  id: number;
+  title: string;
+  price: number;
+  description: string;
+  images: string[];
+  creationAt: string;
+  updatedAt: string;
+  category: Category;
+}
+
+export interface Category {
+  id: number;
+  name: string;
+  image: string;
+  creationAt: string;
+  updatedAt: string;
 }

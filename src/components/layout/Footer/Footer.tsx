@@ -1,8 +1,6 @@
+//eslint-disable typescript-eslint/no-misused-promises
 export default function Footer() {
   return (
-    // <footer classNameName=" flex-none mx-auto max-w-2xl w-full px-4 py-2">
-    //   <p>Footer</p>
-    // </footer>
     <footer
       aria-label="Site Footer"
       className="lg:grid lg:grid-cols-5 dark:bg-slate-700 bg-white"

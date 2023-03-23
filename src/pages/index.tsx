@@ -3,6 +3,7 @@ import Image from "next/image";
 import { Inter } from "next/font/google";
 import Hero from "@/components/layout/Header/Hero";
 import Main from "@/components/layout/Main";
+import ProductBox from "@/components/common/ProductBox";
 const inter = Inter({ subsets: ["latin"] });
 
 const DATA = {
@@ -10,7 +11,8 @@ const DATA = {
   description: `Lorem ipsum dolor sit amet, consectetur adipiscing elit. Nam tristique
   nibh ac massa congue, ac faucibus ex placerat. Aliquam eu fermentum
   diam, vel tincidunt leo.`,
-  imagePath: `https://picsum.photos/id/237/536/354`,
+  images: [`https://picsum.photos/id/237/536/354`],
+  price: 100,
 };
 
 interface ProductProps {
@@ -72,13 +74,13 @@ export default function Home() {
 
           <ul className="grid md:grid-cols-3 grid-cols-2 gap-6 pt-6">
             <li>
-              <Product data={DATA} />
+              <ProductBox data={DATA} />
             </li>
             <li>
-              <Product data={DATA} />
+              <ProductBox data={DATA} />
             </li>
             <li>
-              <Product data={DATA} />
+              <ProductBox data={DATA} />
             </li>
           </ul>
         </div>

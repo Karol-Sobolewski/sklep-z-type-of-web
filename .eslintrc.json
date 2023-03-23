@@ -19,12 +19,10 @@
     }
   },
   "plugins": [
-    "react",
-    "css-modules"
+    "react"
   ],
   "extends": [
-    "wesbos/typescript",
-    "plugin:css-modules/recommended"
+    "wesbos/typescript"
   ],
   "rules": {
     "indent": [
