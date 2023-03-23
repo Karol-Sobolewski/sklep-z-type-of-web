@@ -3,6 +3,7 @@ import Image from "next/image";
 import { Inter } from "next/font/google";
 import styles from "@/styles/Home.module.css";
 import Link from "next/link";
+import Main from "@/components/layout/Main";
 
 const inter = Inter({ subsets: ["latin"] });
 
@@ -11,18 +12,13 @@ export default function About() {
     <>
       <Head>
         <title>About us</title>
-        <meta name="description" content="About us page" />
+        <meta name="description" content="O nas" />
         <meta name="viewport" content="width=device-width, initial-scale=1" />
         <link rel="icon" href="/favicon.ico" />
       </Head>
-      <main>
-        About
-
-
-
-        
-        <Link href="/">Home</Link>
-      </main>
+      <Main>
+        <div>About</div>
+      </Main>
     </>
   );
 }

@@ -7,12 +7,8 @@ export default function Document() {
     <Html lang="pl">
       <Head />
       <body className="bg-gray-100 dark:bg-slate-800 flex flex-col min-h-screen dark:text-white antialiased">
-        <Header />
-        <div className="max-w-md mx-auto w-full flex-grow px-4 py-2">
-          <Main />
-        </div>
+        <Main />
         <NextScript />
-        <Footer />
       </body>
     </Html>
   );
