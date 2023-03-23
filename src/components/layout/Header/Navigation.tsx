@@ -4,6 +4,7 @@ const menu = [
   { title: "Strona domowa", path: "/" },
   { title: "O nas", path: "/onas" },
   { title: "Wyroby", path: "/wyroby" },
+  { title: "WyrobyCSR", path: "/wyroby-csr" },
 ];
 
 export default function Navigation() {
@@ -31,7 +32,9 @@ export default function Navigation() {
 
           <a href="/#" className="flex">
             <span className="sr-only">Logo</span>
-            <span className="inline-block h-10 w-32 rounded-lg bg-gray-200"></span>
+            <span className="inline-block h-10 w-10 rounded-lg bg-red-800">
+              LOGO
+            </span>
           </a>
         </div>
 

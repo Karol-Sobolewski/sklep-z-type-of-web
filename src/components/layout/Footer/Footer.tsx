@@ -1,4 +1,5 @@
-//eslint-disable typescript-eslint/no-misused-promises
+import { Inter } from "next/font/google";
+
 export default function Footer() {
   return (
     <footer
@@ -6,11 +7,11 @@ export default function Footer() {
       className="lg:grid lg:grid-cols-5 dark:bg-slate-700 bg-white"
     >
       <div className="relative block h-32 lg:col-span-2 lg:h-full">
-        {/* <img
-          src="https://images.unsplash.com/photo-1642370324100-324b21fab3a9?ixlib=rb-1.2.1&ixid=MnwxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8&auto=format&fit=crop&w=1548&q=80"
-          alt=""
+        <img
+          src="https://dynamic-media-cdn.tripadvisor.com/media/photo-o/0e/6d/4b/88/manufaktura-rynek-glowny.jpg?w=1200&h=1200&s=1"
+          alt="Manufaktura Zakonna"
           className="absolute inset-0 object-cover w-full h-full"
-        /> */}
+        />
       </div>
 
       <div className="px-4 py-16 sm:px-6 lg:col-span-3 lg:px-8">
@@ -21,7 +22,7 @@ export default function Footer() {
                 href="#"
                 className="block text-2xl mb-6 font-medium dark:text-gray-300 text-gray-900 hover:opacity-75 sm:text-3xl"
               >
-                Sklep Zakonny
+                Manufaktura Zakonna
                 <span className="text-xs tracking-wide pt-3 flex">
                   Aleja Jana Pawła II 32
                 </span>
@@ -122,7 +123,7 @@ export default function Footer() {
           <div className="grid grid-cols-1 gap-4 sm:grid-cols-2">
             <div>
               <p className="font-medium dark:text-gray-300 text-gray-900">
-                Services
+                Wyroby
               </p>
 
               <nav aria-label="Footer Navigation - Services" className="mt-6">
@@ -132,7 +133,7 @@ export default function Footer() {
                       href="#"
                       className="dark:text-white text-gray-700 transition hover:opacity-75"
                     >
-                      1on1 Coaching
+                      Kategoria 1
                     </a>
                   </li>
 
@@ -141,7 +142,7 @@ export default function Footer() {
                       href="#"
                       className="dark:text-white text-gray-700 transition hover:opacity-75"
                     >
-                      Company Review
+                      Kategoria 2
                     </a>
                   </li>
 
@@ -150,7 +151,7 @@ export default function Footer() {
                       href="#"
                       className="dark:text-white text-gray-700 transition hover:opacity-75"
                     >
-                      Accounts Review
+                      Kategoria 3
                     </a>
                   </li>
 
@@ -159,7 +160,7 @@ export default function Footer() {
                       href="#"
                       className="dark:text-white text-gray-700 transition hover:opacity-75"
                     >
-                      HR Consulting
+                      Kategoria 4
                     </a>
                   </li>
 
@@ -168,7 +169,7 @@ export default function Footer() {
                       href="#"
                       className="dark:text-white text-gray-700 transition hover:opacity-75"
                     >
-                      SEO Optimisation
+                      Kategoria 5
                     </a>
                   </li>
                 </ul>
@@ -184,28 +185,10 @@ export default function Footer() {
                 <ul className="space-y-4 text-sm">
                   <li>
                     <a
-                      href="#"
+                      href="/onas"
                       className="dark:text-white text-gray-700 transition hover:opacity-75"
                     >
-                      About
-                    </a>
-                  </li>
-
-                  <li>
-                    <a
-                      href="#"
-                      className="dark:text-white text-gray-700 transition hover:opacity-75"
-                    >
-                      Meet the Team
-                    </a>
-                  </li>
-
-                  <li>
-                    <a
-                      href="#"
-                      className="dark:text-white text-gray-700 transition hover:opacity-75"
-                    >
-                      Accounts Review
+                      O Nas
                     </a>
                   </li>
                 </ul>

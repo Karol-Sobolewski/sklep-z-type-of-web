@@ -4,15 +4,34 @@ import { Inter } from "next/font/google";
 import Main from "@/components/layout/Main";
 import ProductBox from "@/components/common/ProductBox";
 import { InferGetStaticPropsType } from "next";
+import { useQuery } from "@tanstack/react-query";
+import LoadingImages from "@/components/common/LoadingImages";
 
-export default function ProductsPage({
-  data,
-}: InferGetStaticPropsType<typeof getStaticProps>) {
+const getProducts = async () => {
+  const res = await fetch(`https://api.escuelajs.co/api/v1/products`);
+  const data: StoreApiResponse[] = await res.json();
+  return data;
+};
+
+export default function ProductsPage() {
+  const result = useQuery(["products"], getProducts);
+  result.data;
+  result.isLoading;
+  result.isError;
+
+  if (result.isLoading) {
+    return <LoadingImages />;
+  }
+
+  if (!result.data || result.error) {
+    return <div>Błąd</div>;
+  }
+
   return (
     <>
       <Head>
         <title>Nasze Wyroby</title>
-        <meta name="description" content="Nasze Wyroby" />
+        <meta name="description" content="Nasze Wyroby CSR" />
         <meta name="viewport" content="width=device-width, initial-scale=1" />
         <link rel="icon" href="/favicon.ico" />
       </Head>
@@ -37,7 +56,7 @@ export default function ProductsPage({
           </div>
 
           <ul className="mt-4 grid gap-6 grid-col-1 sm:grid-cols-2 lg:grid-cols-4">
-            {data.map((item) => (
+            {result.data.map((item) => (
               <li key={item.id}>
                 <ProductBox data={item} />
               </li>
@@ -123,17 +142,6 @@ export default function ProductsPage({
     </>
   );
 }
-
-export const getStaticProps = async () => {
-  const res = await fetch(`https://api.escuelajs.co/api/v1/products`);
-  const data: StoreApiResponse[] = await res.json();
-
-  return {
-    props: {
-      data,
-    },
-  };
-};
 
 export interface StoreApiResponse {
   id: number;

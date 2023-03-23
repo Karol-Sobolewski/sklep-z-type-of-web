@@ -29,10 +29,7 @@ export default function ({ data }: ProductProps) {
         <p className="mt-2">
           <span className="sr-only"> Regular Price </span>
 
-          <span className="tracking-wider text-gray-900">
-            {" "}
-            {data.price / 100} Zł
-          </span>
+          <span className="tracking-wider text-gray-900"> {data.price} Zł</span>
         </p>
       </div>
     </a>
