@@ -1,25 +1,42 @@
-import { useState } from "react";
-import Main from "../layout/Main";
-
 export type Props = {
   currentPage: number;
   paginate: (pageNumber: number) => void;
+  totalPages: number;
+  minPageLimit: number;
+  maxPageLimit: number;
 };
 
-export default function Pagination({ currentPage, paginate }: Props) {
+export default function Pagination({
+  currentPage,
+  paginate,
+  totalPages,
+  minPageLimit,
+  maxPageLimit,
+}: Props) {
   const pageNumbers = [];
-  // const [productsPerPage, setCurrentPage] = useState(1);
-  console.log(`currentPage`, currentPage);
-  for (let i = 1; i <= 10; i++) {
+  for (let i = 1; i <= totalPages; i++) {
     pageNumbers.push(i);
   }
 
+  const handleDecrease = () => {
+    if (currentPage > 1) {
+      paginate(currentPage - 1);
+    } else return;
+  };
+
+  const handleIncrease = () => {
+    if (currentPage < totalPages) {
+      paginate(currentPage + 1);
+    } else return;
+  };
+
   return (
     <ol className="mt-8 flex justify-center gap-1 text-xs font-medium">
-      <li>
+      <li className={currentPage === 1 ? "hidden" : "flex"}>
         <a
           href="#"
           className="inline-flex h-8 w-8 items-center justify-center rounded border border-gray-100"
+          onClick={() => handleDecrease()}
         >
           <span className="sr-only">Prev Page</span>
           <svg
@@ -37,25 +54,30 @@ export default function Pagination({ currentPage, paginate }: Props) {
         </a>
       </li>
 
-      {pageNumbers.map((number) => (
-        <li key={number}>
-          <a
-            href="#"
-            className={`block h-8 w-8 rounded border border-gray-100 text-center leading-8 hover:border-red-800  ${
-              currentPage === number ? `  border-red-800 text-red-800` : ``
-            }`}
-            key={number}
-            onClick={() => paginate(number)}
-          >
-            {number}
-          </a>
-        </li>
-      ))}
+      {pageNumbers.map((number) => {
+        if (number <= maxPageLimit && number > minPageLimit) {
+          return (
+            <li key={number}>
+              <a
+                href="#"
+                className={`block h-8 w-8 rounded border border-gray-100 text-center leading-8 hover:border-red-800  ${
+                  currentPage === number ? `  border-red-800 text-red-800` : ``
+                }`}
+                key={number}
+                onClick={() => paginate(number)}
+              >
+                {number}
+              </a>
+            </li>
+          );
+        } else return null;
+      })}
 
-      <li>
+      <li className={currentPage === totalPages ? "hidden" : "flex"}>
         <a
           href="#"
           className="inline-flex h-8 w-8 items-center justify-center rounded border border-gray-100"
+          onClick={() => handleIncrease()}
         >
           <span className="sr-only">Next Page</span>
           <svg

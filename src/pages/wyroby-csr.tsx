@@ -12,14 +12,16 @@ import { useRouter } from "next/router";
 
 export default function ProductsPage() {
   const [currentPage, setCurrentPage] = useState(1);
-
+  const pageNumberLimit = 5;
+  const [maxPageLimit, setMaxPageLimit] = useState(5);
+  const [minPageLimit, setMinPageLimit] = useState(0);
+  const totalPages = 10;
   const getProducts = async () => {
     const res = await fetch(
       `https://naszsklep-api.vercel.app/api/products?take=25&offset=${
         (currentPage - 1) * 25
       }`
     );
-    console.log(`res`, res);
     const data: StoreApiResponse[] = await res.json();
     return data;
   };
@@ -31,7 +33,12 @@ export default function ProductsPage() {
 
   const paginate = (pageNumber: any) => {
     setCurrentPage(pageNumber);
-    console.log(`pageNumber`, pageNumber);
+    if (pageNumber < pageNumberLimit - 2) {
+      setMaxPageLimit(pageNumberLimit);
+    } else {
+      setMaxPageLimit(pageNumber + 2);
+    }
+    setMinPageLimit(pageNumber - 3);
     result.refetch();
   };
 
@@ -79,7 +86,13 @@ export default function ProductsPage() {
             ))}
           </ul>
 
-          <Pagination currentPage={currentPage} paginate={paginate} />
+          <Pagination
+            currentPage={currentPage}
+            paginate={paginate}
+            totalPages={totalPages}
+            minPageLimit={minPageLimit}
+            maxPageLimit={maxPageLimit}
+          />
         </div>
       </Main>
     </>

@@ -6,10 +6,19 @@ import Pagination from "@/components/common/Pagination";
 
 import { ProductListItem } from "@/components/common/ProductDetails";
 import { InferGetStaticPropsType } from "next";
+import { useState } from "react";
 
 export default function ProductsPage({
   data,
 }: InferGetStaticPropsType<typeof getStaticProps>) {
+  const [currentPage, setCurrentPage] = useState(1);
+  const pageNumberLimit = 5;
+  const [maxPageLimit, setMaxPageLimit] = useState(5);
+  const [minPageLimit, setMinPageLimit] = useState(0);
+  const paginate = (pageNumber: any) => {
+    console.log(`pageNumber`, pageNumber);
+  };
+
   return (
     <>
       <Head>
@@ -45,8 +54,13 @@ export default function ProductsPage({
               </li>
             ))}
           </ul>
-
-          {/* <Pagination /> */}
+          <Pagination
+            currentPage={currentPage}
+            paginate={paginate}
+            totalPages={10}
+            minPageLimit={minPageLimit}
+            maxPageLimit={maxPageLimit}
+          />
         </div>
       </Main>
     </>
