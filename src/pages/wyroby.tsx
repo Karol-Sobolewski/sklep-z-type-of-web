@@ -2,7 +2,9 @@ import Head from "next/head";
 import Image from "next/image";
 import { Inter } from "next/font/google";
 import Main from "@/components/layout/Main";
-import ProductBox from "@/components/common/ProductBox";
+import Pagination from "@/components/common/Pagination";
+
+import { ProductListItem } from "@/components/common/ProductDetails";
 import { InferGetStaticPropsType } from "next";
 
 export default function ProductsPage({
@@ -39,85 +41,12 @@ export default function ProductsPage({
           <ul className="mt-4 grid gap-6 grid-col-1 sm:grid-cols-2 lg:grid-cols-4">
             {data.map((item) => (
               <li key={item.id}>
-                <ProductBox data={item} />
+                <ProductListItem data={item} />
               </li>
             ))}
           </ul>
 
-          <ol className="mt-8 flex justify-center gap-1 text-xs font-medium">
-            <li>
-              <a
-                href="#"
-                className="inline-flex h-8 w-8 items-center justify-center rounded border border-gray-100"
-              >
-                <span className="sr-only">Prev Page</span>
-                <svg
-                  xmlns="http://www.w3.org/2000/svg"
-                  className="h-3 w-3"
-                  viewBox="0 0 20 20"
-                  fill="currentColor"
-                >
-                  <path
-                    fill-rule="evenodd"
-                    d="M12.707 5.293a1 1 0 010 1.414L9.414 10l3.293 3.293a1 1 0 01-1.414 1.414l-4-4a1 1 0 010-1.414l4-4a1 1 0 011.414 0z"
-                    clip-rule="evenodd"
-                  />
-                </svg>
-              </a>
-            </li>
-
-            <li>
-              <a
-                href="#"
-                className="block h-8 w-8 rounded border border-gray-100 text-center leading-8"
-              >
-                1
-              </a>
-            </li>
-
-            <li className="block h-8 w-8 rounded border-black bg-black text-center leading-8 text-white">
-              2
-            </li>
-
-            <li>
-              <a
-                href="#"
-                className="block h-8 w-8 rounded border border-gray-100 text-center leading-8"
-              >
-                3
-              </a>
-            </li>
-
-            <li>
-              <a
-                href="#"
-                className="block h-8 w-8 rounded border border-gray-100 text-center leading-8"
-              >
-                4
-              </a>
-            </li>
-
-            <li>
-              <a
-                href="#"
-                className="inline-flex h-8 w-8 items-center justify-center rounded border border-gray-100"
-              >
-                <span className="sr-only">Next Page</span>
-                <svg
-                  xmlns="http://www.w3.org/2000/svg"
-                  className="h-3 w-3"
-                  viewBox="0 0 20 20"
-                  fill="currentColor"
-                >
-                  <path
-                    fill-rule="evenodd"
-                    d="M7.293 14.707a1 1 0 010-1.414L10.586 10 7.293 6.707a1 1 0 011.414-1.414l4 4a1 1 0 010 1.414l-4 4a1 1 0 01-1.414 0z"
-                    clip-rule="evenodd"
-                  />
-                </svg>
-              </a>
-            </li>
-          </ol>
+          {/* <Pagination /> */}
         </div>
       </Main>
     </>
@@ -125,7 +54,7 @@ export default function ProductsPage({
 }
 
 export const getStaticProps = async () => {
-  const res = await fetch(`https://api.escuelajs.co/api/v1/products`);
+  const res = await fetch(`https://naszsklep-api.vercel.app/api/products`);
   const data: StoreApiResponse[] = await res.json();
 
   return {
@@ -140,7 +69,7 @@ export interface StoreApiResponse {
   title: string;
   price: number;
   description: string;
-  images: string[];
+  image: string;
   creationAt: string;
   updatedAt: string;
   category: Category;

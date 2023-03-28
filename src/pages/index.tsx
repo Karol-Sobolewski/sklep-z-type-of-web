@@ -3,23 +3,25 @@ import Image from "next/image";
 import { Inter } from "next/font/google";
 import Hero from "@/components/layout/Header/Hero";
 import Main from "@/components/layout/Main";
-import ProductBox from "@/components/common/ProductBox";
+import ProductBox from "@/components/common/ProductDetails";
 const inter = Inter({ subsets: ["latin"] });
 
 const DATA = {
+  id: 1,
   title: `Product 1`,
   description: `Lorem ipsum dolor sit amet, consectetur adipiscing elit. Nam tristique
   nibh ac massa congue, ac faucibus ex placerat. Aliquam eu fermentum
   diam, vel tincidunt leo.`,
-  images: [`https://picsum.photos/id/237/536/354`],
+  image: `https://picsum.photos/id/237/536/354`,
   price: 100,
 };
 
 interface ProductProps {
   data: {
+    id: number;
     title: string;
     description: string;
-    imagePath: string;
+    image: string;
     price?: number;
   };
 }
@@ -28,7 +30,7 @@ const Product = ({ data }: ProductProps) => {
   return (
     <a href="#" className="block overflow-hidden group">
       <img
-        src={data.imagePath}
+        src={data.image}
         alt={data.title}
         className="h-[350px] w-full object-cover transition duration-500 group-hover:scale-105 sm:h-[450px]"
       />

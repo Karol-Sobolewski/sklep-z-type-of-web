@@ -1,23 +1,26 @@
-import Head from 'next/head'
-import Image from 'next/image'
-import { Inter } from 'next/font/google'
-import Link from 'next/link'
+import Head from "next/head";
+import Image from "next/image";
+import { Inter } from "next/font/google";
+import Link from "next/link";
+import Main from "@/components/layout/Main";
 
-const inter = Inter({ subsets: ['latin'] })
+const inter = Inter({ subsets: ["latin"] });
 
 export default function About() {
   return (
     <>
       <Head>
-        <title>About us</title>
+        <title>404</title>
         <meta name="description" content="404" />
         <meta name="viewport" content="width=device-width, initial-scale=1" />
         <link rel="icon" href="/favicon.ico" />
       </Head>
-      <div>
-        Not found
-        <Link href='/'>Home</Link>
-      </div>
+      <Main>
+        <div>
+          Nie znaleziono strony przejdź do  <Link href="/">strony głównej</Link>
+         
+        </div>
+      </Main>
     </>
-  )
+  );
 }
