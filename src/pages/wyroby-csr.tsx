@@ -32,7 +32,7 @@ export default function ProductsPage() {
   const paginate = (pageNumber: any) => {
     setCurrentPage(pageNumber);
     console.log(`pageNumber`, pageNumber);
-    result.refetch(["products"], getProducts);
+    result.refetch();
   };
 
   if (result.isLoading) {
@@ -87,7 +87,7 @@ export default function ProductsPage() {
 }
 
 export interface StoreApiResponse {
-  id: number;
+  id: string;
   title: string;
   price: number;
   description: string;

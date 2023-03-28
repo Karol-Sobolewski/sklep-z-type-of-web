@@ -7,7 +7,7 @@ import ProductBox from "@/components/common/ProductDetails";
 const inter = Inter({ subsets: ["latin"] });
 
 const DATA = {
-  id: 1,
+  id: "1",
   title: `Product 1`,
   description: `Lorem ipsum dolor sit amet, consectetur adipiscing elit. Nam tristique
   nibh ac massa congue, ac faucibus ex placerat. Aliquam eu fermentum
@@ -18,7 +18,7 @@ const DATA = {
 
 interface ProductProps {
   data: {
-    id: number;
+    id: string;
     title: string;
     description: string;
     image: string;

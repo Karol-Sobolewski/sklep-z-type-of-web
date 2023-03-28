@@ -65,7 +65,7 @@ export const getStaticProps = async () => {
 };
 
 export interface StoreApiResponse {
-  id: number;
+  id: string;
   title: string;
   price: number;
   description: string;

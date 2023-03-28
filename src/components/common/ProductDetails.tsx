@@ -2,7 +2,7 @@ import { Inter } from "next/font/google";
 import Link from "next/link";
 
 interface ProductDetails {
-  id: number;
+  id: string;
   title: string;
   description: string;
   image: string;

@@ -15,7 +15,6 @@ export default function ProductPage({
   if (!data) return <Loading />;
   return (
     <>
-      Test
       <Head>
         <title>Produkt</title>
         <meta name="description" content="Produkt" />
@@ -81,7 +80,7 @@ export const getStaticProps = async ({
 };
 
 export interface StoreApiResponse {
-  id: number;
+  id: string;
   title: string;
   price: number;
   description: string;
@@ -92,7 +91,7 @@ export interface StoreApiResponse {
 }
 
 export interface Category {
-  id: number;
+  id: string;
   name: string;
   image: string;
   creationAt: string;
