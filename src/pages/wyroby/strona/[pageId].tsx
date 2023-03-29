@@ -1,23 +1,48 @@
 import Head from "next/head";
 import Image from "next/image";
 import { Inter } from "next/font/google";
+import Link from "next/link";
 import Main from "@/components/layout/Main";
-import Pagination from "@/components/common/Pagination";
-
-import { ProductListItem } from "@/components/common/ProductDetails";
-import { InferGetStaticPropsType } from "next";
+import { useRouter } from "next/router";
+import {
+  GetStaticPropsContext,
+  InferGetStaticPropsType,
+  NextApiRequest,
+  NextApiResponse,
+} from "next";
+import Loading from "@/components/common/Loading";
+import ProductDetails, {
+  ProductListItem,
+} from "@/components/common/ProductDetails";
 import { useState } from "react";
+import Pagination from "@/components/common/Pagination";
+import { redirect } from "next/navigation";
 
-export default function ProductsPage({
+export default function ProductPage({
   data,
+  page,
 }: InferGetStaticPropsType<typeof getStaticProps>) {
-  const [currentPage, setCurrentPage] = useState(1);
+  const router = useRouter();
+  const [currentPage, setCurrentPage] = useState(page);
   const pageNumberLimit = 5;
   const [maxPageLimit, setMaxPageLimit] = useState(5);
   const [minPageLimit, setMinPageLimit] = useState(0);
-  const paginate = (pageNumber: any) => {
-    console.log(`pageNumber`, pageNumber);
+
+  const paginate = (pageNumber: number) => {
+    if (pageNumber === 1) {
+      router.push("/wyroby");
+    }
+    setCurrentPage(pageNumber);
+    if (pageNumber < pageNumberLimit - 2) {
+      setMaxPageLimit(pageNumberLimit);
+    } else {
+      setMaxPageLimit(pageNumber + 2);
+    }
+    setMinPageLimit(pageNumber - 3);
+    router.push(`${pageNumber}`);
   };
+
+  if (!data) return <Loading />;
 
   return (
     <>
@@ -48,14 +73,17 @@ export default function ProductsPage({
           </div>
 
           <ul className="mt-4 grid gap-6 grid-col-1 sm:grid-cols-2 lg:grid-cols-4">
-            {data.map((item) => (
-              <li key={item.id}>
-                <ProductListItem data={item} />
-              </li>
-            ))}
+            {data.map((item) => {
+              return (
+                <li key={item.id}>
+                  <ProductListItem data={item} />
+                </li>
+              );
+            })}
           </ul>
+
           <Pagination
-            currentPage={currentPage}
+            currentPage={page}
             paginate={paginate}
             totalPages={10}
             minPageLimit={minPageLimit}
@@ -67,13 +95,48 @@ export default function ProductsPage({
   );
 }
 
-export const getStaticProps = async () => {
-  const res = await fetch(`https://naszsklep-api.vercel.app/api/products`);
+export const getStaticPaths = async () => {
+  return {
+    paths: Array.from({ length: 10 }, (_, i) => i + 1).map((i) => {
+      return {
+        params: {
+          pageId: i.toString(),
+        },
+      };
+    }),
+    fallback: "blocking",
+  };
+};
+
+export type InferGetStaticPathsType<T> = T extends () => Promise<{
+  paths: Array<{ params: infer R }>;
+}>
+  ? R
+  : never;
+
+export const getStaticProps = async ({
+  params,
+}: GetStaticPropsContext<InferGetStaticPathsType<typeof getStaticPaths>>) => {
+  const page = Number(params?.pageId) || 1;
+  if (!params?.pageId) {
+    return {
+      props: {},
+      notFound: true,
+    };
+  }
+
+  const res = await fetch(
+    `https://naszsklep-api.vercel.app/api/products?take=25&offset=${
+      (page - 1) * 25
+    }`
+  );
   const data: StoreApiResponse[] = await res.json();
 
   return {
     props: {
       data,
+
+      page: page,
     },
   };
 };
@@ -90,7 +153,7 @@ export interface StoreApiResponse {
 }
 
 export interface Category {
-  id: number;
+  id: string;
   name: string;
   image: string;
   creationAt: string;

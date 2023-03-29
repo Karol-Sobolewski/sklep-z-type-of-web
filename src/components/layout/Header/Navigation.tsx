@@ -44,20 +44,22 @@ export default function Navigation() {
             className="hidden lg:flex lg:gap-4 lg:text-xs lg:font-bold lg:uppercase lg:tracking-wide lg:text-gray-500 dark:lg:text-white"
           >
             <ul className="flex gap-6">
-              {menu.map((link, index) => (
-                <li key={index}>
-                  <Link
-                    className={` hover:text-red-800  ${
-                      router.pathname !== `/` && router.pathname === link.path
-                        ? `  border-red-800 text-red-800`
-                        : ``
-                    }`}
-                    href={link.path}
-                  >
-                    {link.title}
-                  </Link>
-                </li>
-              ))}
+              {menu.map((link, index) => {
+                return (
+                  <li key={index}>
+                    <Link
+                      className={` hover:text-red-800  ${
+                        router.pathname !== `/` && router.pathname === link.path
+                          ? `  border-red-800 text-red-800`
+                          : ``
+                      }`}
+                      href={link.path}
+                    >
+                      {link.title}
+                    </Link>
+                  </li>
+                );
+              })}
             </ul>
           </nav>
 
