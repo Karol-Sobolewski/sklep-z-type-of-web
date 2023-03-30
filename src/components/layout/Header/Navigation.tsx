@@ -3,7 +3,7 @@ import { useRouter } from "next/router";
 const menu = [
   { title: "Strona domowa", path: "/" },
   { title: "O nas", path: "/onas" },
-  { title: "Wyroby", path: "/wyroby" },
+  { title: "Wyroby", path: "/wyroby/strona/1" },
   { title: "WyrobyCSR", path: "/wyroby-csr" },
 ];
 

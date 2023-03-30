@@ -7,6 +7,16 @@ const nextConfig = {
   experimental: {
     gzipSize: true,
   },
+  //TODO
+  async redirects() {
+    return [
+      {
+        source: '/wyroby/strona/1',
+        destination: '/wyroby/',
+        permanent: true,
+      },
+    ]
+  }, 
   images: {
     domains: [`naszsklep-api.vercel.app`],
     formats: ["image/avif", "image/webp"],

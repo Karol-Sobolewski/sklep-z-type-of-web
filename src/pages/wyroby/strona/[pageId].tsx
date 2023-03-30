@@ -44,6 +44,8 @@ export default function ProductPage({
 
   if (!data) return <Loading />;
 
+  if (router.isFallback) return <Loading />;
+
   return (
     <>
       <Head>
@@ -104,7 +106,7 @@ export const getStaticPaths = async () => {
         },
       };
     }),
-    fallback: "blocking",
+    fallback: true,
   };
 };
 

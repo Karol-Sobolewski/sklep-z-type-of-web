@@ -47,7 +47,7 @@ export const getStaticPaths = async () => {
         },
       };
     }),
-    fallback: false,
+    fallback: true,
   };
 };
 
@@ -66,8 +66,6 @@ export const getStaticProps = async ({
       notFound: true,
     };
   }
-
-  //TODO: Dodać offset i take do url
 
   const res = await fetch(
     `https://naszsklep-api.vercel.app/api/products/${params.productId}`

@@ -75,7 +75,7 @@ export default function Home() {
           </div>
 
           <ul className="grid md:grid-cols-3 grid-cols-2 gap-6 pt-6">
-            <li>
+            {/* <li>
               <ProductBox data={DATA} />
             </li>
             <li>
@@ -83,7 +83,7 @@ export default function Home() {
             </li>
             <li>
               <ProductBox data={DATA} />
-            </li>
+            </li> */}
           </ul>
         </div>
 
