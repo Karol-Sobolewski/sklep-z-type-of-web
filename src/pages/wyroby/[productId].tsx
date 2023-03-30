@@ -67,6 +67,8 @@ export const getStaticProps = async ({
     };
   }
 
+  //TODO: Dodać offset i take do url
+
   const res = await fetch(
     `https://naszsklep-api.vercel.app/api/products/${params.productId}`
   );

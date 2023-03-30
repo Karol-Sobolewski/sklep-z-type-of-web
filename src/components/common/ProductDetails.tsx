@@ -1,3 +1,4 @@
+import Image from "next/image";
 import Link from "next/link";
 
 interface ProductDetails {
@@ -14,8 +15,16 @@ interface ProductProps {
 
 export default function ProductDetails({ data }: ProductProps) {
   return (
-    <div className="block overflow-hidden group shadow-xl dark:border-gray-800 border-2 rounded-lg duration-500 transition-all hover:shadow-2xl">
-      <img
+    <div className="bg-white block overflow-hidden group shadow-xl dark:border-gray-800 border-2 rounded-lg duration-500 transition-all hover:shadow-2xl">
+      <Image
+        width={885}
+        height={500}
+        style={{
+          maxWidth: "100%",
+          height: "auto",
+          aspectRatio: "16/9",
+          objectFit: "contain",
+        }}
         src={data.image}
         alt={data.title}
         className="h-[350px] w-full object-cover transition duration-500 group-hover:scale-105 sm:h-[450px]"
@@ -45,12 +54,20 @@ export function ProductListItem({ data }: ProductListItemProps) {
   return (
     <Link
       href={`/wyroby/${data.id}`}
-      className="block overflow-hidden group shadow-xl dark:border-gray-800 border-2 rounded-lg duration-500 transition-all hover:shadow-2xl"
+      className="bg-white block overflow-hidden group shadow-xl dark:border-gray-800 border-2 rounded-lg duration-500 transition-all hover:shadow-2xl"
     >
-      <img
+      <Image
+        width={200}
+        height={300}
+        style={{
+          maxWidth: "100%",
+          height: "auto",
+          aspectRatio: "2/3",
+          objectFit: "contain",
+        }}
         src={data.image}
         alt={data.title}
-        className="h-[350px] w-full object-cover transition duration-500 group-hover:scale-105 sm:h-[450px]"
+        className="h-[300px] w-full object-cover transition duration-500 group-hover:scale-105 sm:h-[450px]"
       />
 
       <div className="relative p-3 bg-white">

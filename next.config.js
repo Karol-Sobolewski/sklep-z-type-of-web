@@ -6,7 +6,11 @@ const nextConfig = {
   optimizeFonts: true,
   experimental: {
     gzipSize: true,
-  }
-}
+  },
+  images: {
+    domains: [`naszsklep-api.vercel.app`],
+    formats: ["image/avif", "image/webp"],
+  },
+};
 
-module.exports = nextConfig
+module.exports = nextConfig;
