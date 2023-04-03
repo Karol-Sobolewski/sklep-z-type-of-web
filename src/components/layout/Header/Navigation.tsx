@@ -3,7 +3,7 @@ import { useRouter } from "next/router";
 const menu = [
   { title: "Strona domowa", path: "/" },
   { title: "O nas", path: "/onas" },
-  { title: "Wyroby", path: "/wyroby/strona/1" },
+  { title: "Wyroby", path: "/wyroby" },
   { title: "WyrobyCSR", path: "/wyroby-csr" },
 ];
 
@@ -45,6 +45,7 @@ export default function Navigation() {
           >
             <ul className="flex gap-6">
               {menu.map((link, index) => {
+                console.log(`router.pathname`, router.pathname);
                 return (
                   <li key={index}>
                     <Link
