@@ -1,4 +1,10 @@
-import { createContext, ReactNode, useContext, useState } from "react";
+import {
+  createContext,
+  ReactNode,
+  useContext,
+  useEffect,
+  useState,
+} from "react";
 
 interface CartItem {
   id: string | number;
@@ -16,25 +22,54 @@ interface CartState {
 
 export const CartStateContext = createContext<CartState | null>(null);
 
+const getCartItemsFromStorage = () => {
+  const itemsFromLocalStorage = localStorage.getItem("SHOPPING_CART");
+
+  if (!itemsFromLocalStorage) return;
+  try {
+    const items = JSON.parse(itemsFromLocalStorage);
+    return items;
+  } catch (err) {
+    console.log(err);
+    return [];
+  }
+};
+
+const getSetItemsInStorage = (cartItems: CartItem[]) => {
+  localStorage.setItem("SHOPPING_CART", JSON.stringify(cartItems));
+};
+
 export const CartStateContextProvider = ({
   children,
 }: {
   children: ReactNode;
 }) => {
-  const [cartItems, setCartItems] = useState<CartItem[]>([]);
+  const [cartItems, setCartItems] = useState<CartItem[] | undefined>(undefined);
+
+  useEffect(() => {
+    setCartItems(getCartItemsFromStorage());
+  }, []);
+
+  useEffect(() => {
+    if (cartItems === undefined) {
+      return;
+    }
+    getSetItemsInStorage(cartItems);
+  }, [cartItems]);
+
   return (
     <CartStateContext.Provider
       value={{
-        items: cartItems,
+        items: cartItems || [],
         addItemToCart: (item: CartItem) => {
-          setCartItems((prevState) => {
-            const existingItem = prevState.find(
+          setCartItems((prevState = []) => {
+            const existingItem = prevState?.find(
               (existingItem) => existingItem.id === item.id
             );
             if (!existingItem) {
               return [...prevState, item];
             }
-            const index = prevState.indexOf(existingItem);
+            const index = prevState?.indexOf(existingItem);
 
             const newItem = {
               ...existingItem,
@@ -49,7 +84,7 @@ export const CartStateContextProvider = ({
           });
         },
         removeItem: (id) => {
-          setCartItems((prevState) => {
+          setCartItems((prevState = []) => {
             const existingItem = prevState.find(
               (existingItem) => existingItem.id === id
             );
