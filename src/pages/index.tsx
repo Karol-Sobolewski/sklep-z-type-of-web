@@ -4,6 +4,8 @@ import { Inter } from "next/font/google";
 import Hero from "@/components/layout/Header/Hero";
 import Main from "@/components/layout/Main";
 import ProductBox from "@/components/common/ProductDetails";
+import { gql, useQuery } from "@apollo/client";
+import Loading from "@/components/common/Loading";
 const inter = Inter({ subsets: ["latin"] });
 
 const DATA = {
@@ -16,41 +18,59 @@ const DATA = {
   price: 100,
 };
 
-interface ProductProps {
-  data: {
-    id: string;
-    title: string;
-    description: string;
-    image: string;
-    price?: number;
-  };
-}
+// interface ProductProps {
+//   data: {
+//     id: string;
+//     title: string;
+//     description: string;
+//     image: string;
+//     price?: number;
+//   };
+// }
 
-const Product = ({ data }: ProductProps) => {
-  return (
-    <a href="#" className="block overflow-hidden group">
-      <img
-        src={data.image}
-        alt={data.title}
-        className="h-[350px] w-full object-cover transition duration-500 group-hover:scale-105 sm:h-[450px]"
-      />
+// { data }: ProductProps
+// const Product = () => {
+//   return (
+//     <a href="#" className="block overflow-hidden group">
+//       <img
+//         src={data.image}
+//         alt={data.title}
+//         className="h-[350px] w-full object-cover transition duration-500 group-hover:scale-105 sm:h-[450px]"
+//       />
 
-      <div className="relative p-3 bg-white">
-        <h3 className="text-xs text-gray-700 group-hover:underline group-hover:underline-offset-4">
-          {data.title}
-        </h3>
+//       <div className="relative p-3 bg-white">
+//         <h3 className="text-xs text-gray-700 group-hover:underline group-hover:underline-offset-4">
+//           {data.title}
+//         </h3>
 
-        <p className="mt-2">
-          <span className="sr-only"> Regular Price </span>
+//         <p className="mt-2">
+//           <span className="sr-only"> Regular Price </span>
 
-          <span className="tracking-wider text-gray-900"> £24.00 GBP </span>
-        </p>
-      </div>
-    </a>
-  );
-};
+//           <span className="tracking-wider text-gray-900"> £24.00 GBP </span>
+//         </p>
+//       </div>
+//     </a>
+//   );
+// };
+
+const GET_PRODUCTS = gql`
+  query GetProductsList {
+    products {
+      id
+      slug
+      name
+      price
+    }
+  }
+`;
 
 export default function Home() {
+  const { loading, error, data } = useQuery(GET_PRODUCTS);
+
+  // if (loading) return <Loading />;
+  if (error) return <Main>{JSON.stringify(error)}</Main>;
+
+  console.log(`data`, data);
   return (
     <>
       <Head>
@@ -73,9 +93,10 @@ export default function Home() {
               fugit natus?
             </p>
           </div>
-
-          <ul className="grid md:grid-cols-3 grid-cols-2 gap-6 pt-6">
-            {/* <li>
+          {/* <ul className="grid md:grid-cols-3 grid-cols-2 gap-6 pt-6"> */}
+          produkty:
+          <pre>{JSON.stringify(data, null, 2)}</pre>
+          {/* <li>
               <ProductBox data={DATA} />
             </li>
             <li>
@@ -84,7 +105,7 @@ export default function Home() {
             <li>
               <ProductBox data={DATA} />
             </li> */}
-          </ul>
+          {/* </ul> */}
         </div>
 
         {/* <div className="grid md:grid-cols-3 grid-cols-2 gap-6">
