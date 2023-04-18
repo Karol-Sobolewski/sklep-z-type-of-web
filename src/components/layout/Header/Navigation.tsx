@@ -5,7 +5,7 @@ const menu = [
   { title: "Strona domowa", path: "/" },
   { title: "O nas", path: "/onas" },
   { title: "Wyroby", path: "/wyroby" },
-  { title: "WyrobyCSR", path: "/wyroby-csr" },
+  // { title: "WyrobyCSR", path: "/wyroby-csr" },
 ];
 
 export default function Navigation() {
