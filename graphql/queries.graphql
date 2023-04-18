@@ -4,6 +4,7 @@ query GetProductsList($first: Int, $skip: Int) {
     slug
     name
     price
+    description
     images(first: 1) {
       url
       height
@@ -24,6 +25,7 @@ query GetProductBySlug($slug: String) {
     slug
     name
     price
+    description
     images(first: 1) {
       url
       height

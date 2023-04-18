@@ -8,7 +8,7 @@ import {
 
 interface CartItem {
   id: string | number;
-  // images: string;
+  images: string;
   price: number;
   name: string;
   qty: number;

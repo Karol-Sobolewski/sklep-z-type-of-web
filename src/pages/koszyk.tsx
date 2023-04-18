@@ -39,14 +39,14 @@ export default function CartPage() {
                   {cartState.items.map((cartItem) => (
                     <li className="flex items-center gap-4">
                       <img
-                        src={cartItem.image}
-                        alt=""
+                        src={cartItem.images}
+                        alt={cartItem.name}
                         className="h-16 w-16 rounded object-cover"
                       />
 
                       <div>
                         <h3 className="text-sm text-gray-900 dark:text-gray-200">
-                          {cartItem.title}
+                          {cartItem.name}
                         </h3>
 
                         <dl className="mt-0.5 space-y-px text-[10px] text-gray-600 dark:text-gray-400">

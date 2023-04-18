@@ -100,7 +100,7 @@ export function ProductListItem({ data }: ProductListItemProps) {
         onClick={() => {
           cartState.addItemToCart({
             id: data.id,
-            // images: data.images[0].url,
+            images: data.images[0].url,
             name: data.name,
             price: data.price,
             qty: 1,
