@@ -17,16 +17,27 @@ import ProductDetails, {
 import { useState } from "react";
 import Pagination from "@/components/common/Pagination";
 import { redirect } from "next/navigation";
+import { apolloClient } from "@/graphql/apolloClient";
+import { gql } from "@apollo/client";
+import {
+  GetProductsListDocument,
+  GetProductsListQuery,
+  GetProductsListQueryVariables,
+  GetProductsPagesDocument,
+  GetProductsPagesQuery,
+} from "../../../../generated/graphql";
 
 export default function ProductPage({
   data,
   page,
+  pageSize,
 }: InferGetStaticPropsType<typeof getStaticProps>) {
   const router = useRouter();
   const [currentPage, setCurrentPage] = useState(page);
   const pageNumberLimit = 5;
   const [maxPageLimit, setMaxPageLimit] = useState(5);
   const [minPageLimit, setMinPageLimit] = useState(0);
+  const [paginationPages, setPaginationPages] = useState(pageSize);
 
   const paginate = (pageNumber: number) => {
     if (pageNumber === 1) {
@@ -75,7 +86,7 @@ export default function ProductPage({
           </div>
 
           <ul className="mt-4 grid gap-6 grid-col-1 sm:grid-cols-2 lg:grid-cols-4">
-            {data.map((item) => {
+            {data.products.map((item) => {
               return (
                 <li key={item.id}>
                   <ProductListItem data={item} />
@@ -87,7 +98,7 @@ export default function ProductPage({
           <Pagination
             currentPage={page}
             paginate={paginate}
-            totalPages={10}
+            totalPages={paginationPages}
             minPageLimit={minPageLimit}
             maxPageLimit={maxPageLimit}
           />
@@ -127,21 +138,64 @@ export const getStaticProps = async ({
     };
   }
 
-  const res = await fetch(
-    `https://naszsklep-api.vercel.app/api/products?take=25&offset=${
-      (page - 1) * 25
-    }`
-  );
-  const data: StoreApiResponse[] = await res.json();
+  // const res = await fetch(
+  //   `https://naszsklep-api.vercel.app/api/products?take=25&offset=${
+  //     (page - 1) * 25
+  //   }`
+  // );
+  // const data: StoreApiResponse[] = await res.json();
 
+  const { data } = await apolloClient.query<
+    GetProductsListQuery,
+    GetProductsListQueryVariables
+  >({
+    variables: {
+      first: 1,
+      skip: page - 1,
+    },
+    query: GetProductsListDocument,
+  });
+
+  const productsConnection = await apolloClient.query<GetProductsPagesQuery>({
+    query: GetProductsPagesDocument,
+  });
+
+  const pageSize = productsConnection.data.productsConnection.pageInfo.pageSize;
   return {
     props: {
       data,
-
       page: page,
+      pageSize: pageSize,
     },
   };
 };
+
+export interface GetProductsListResponse {
+  products: Product[];
+  productsConnection: pageInfo;
+}
+
+export interface Product {
+  id: string;
+  slug: string;
+  name: string;
+  price: number;
+  images: Image[];
+}
+
+export interface pageInfo {
+  pageInfo: pageSize;
+}
+
+export interface pageSize {
+  pageSize: number;
+}
+
+export interface Image {
+  url: string;
+  height: number;
+  width: number;
+}
 
 export interface StoreApiResponse {
   id: string;

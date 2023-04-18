@@ -70,7 +70,6 @@ export default function Home() {
   // if (loading) return <Loading />;
   if (error) return <Main>{JSON.stringify(error)}</Main>;
 
-  console.log(`data`, data);
   return (
     <>
       <Head>

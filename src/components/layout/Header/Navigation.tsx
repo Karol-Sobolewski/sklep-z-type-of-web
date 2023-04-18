@@ -46,7 +46,6 @@ export default function Navigation() {
           >
             <ul className="flex gap-6">
               {menu.map((link, index) => {
-                console.log(`router.pathname`, router.pathname);
                 return (
                   <li key={index}>
                     <Link

@@ -8,9 +8,9 @@ import {
 
 interface CartItem {
   id: string | number;
-  image: string;
+  // images: string;
   price: number;
-  title: string;
+  name: string;
   qty: number;
 }
 

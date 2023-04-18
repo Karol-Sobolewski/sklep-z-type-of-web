@@ -8,6 +8,8 @@ import { ProductListItem } from "@/components/common/ProductDetails";
 import { InferGetStaticPropsType } from "next";
 import { useState } from "react";
 import { useRouter } from "next/router";
+import { gql } from "@apollo/client";
+import { apolloClient } from "@/graphql/apolloClient";
 
 export default function ProductsPage({
   data,
@@ -52,9 +54,10 @@ export default function ProductsPage({
           </div>
 
           <ul className="mt-4 grid gap-6 grid-col-1 sm:grid-cols-2 lg:grid-cols-4">
-            {data.map((item) => (
+            {data.products.map((item) => (
               <li key={item.id}>
                 <ProductListItem data={item} />
+                {item.id}
               </li>
             ))}
           </ul>
@@ -72,8 +75,26 @@ export default function ProductsPage({
 }
 
 export const getStaticProps = async () => {
-  const res = await fetch(`https://naszsklep-api.vercel.app/api/products`);
-  const data: StoreApiResponse[] = await res.json();
+  const { data } = await apolloClient.query<GetProductsListResponse>({
+    query: gql`
+      query GetProductsList {
+        products {
+          id
+          slug
+          name
+          price
+          images(first: 1) {
+            url
+            height
+            width
+          }
+        }
+      }
+    `,
+  });
+
+  // const res = await fetch(`https://naszsklep-api.vercel.app/api/products`);
+  // const data: StoreApiResponse[] = await res.json();
 
   return {
     props: {
@@ -99,4 +120,22 @@ export interface Category {
   image: string;
   creationAt: string;
   updatedAt: string;
+}
+
+export interface GetProductsListResponse {
+  products: Product[];
+}
+
+export interface Product {
+  id: string;
+  slug: string;
+  name: string;
+  price: number;
+  images: Image[];
+}
+
+export interface Image {
+  url: string;
+  height: number;
+  width: number;
 }
