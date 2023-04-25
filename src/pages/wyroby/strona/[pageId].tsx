@@ -170,48 +170,48 @@ export const getStaticProps = async ({
   };
 };
 
-export interface GetProductsListResponse {
-  products: Product[];
-  productsConnection: pageInfo;
-}
+// export interface GetProductsListResponse {
+//   products: Product[];
+//   productsConnection: pageInfo;
+// }
 
-export interface Product {
-  id: string;
-  slug: string;
-  name: string;
-  price: number;
-  images: Image[];
-}
+// export interface Product {
+//   id: string;
+//   slug: string;
+//   name: string;
+//   price: number;
+//   images: Image[];
+// }
 
-export interface pageInfo {
-  pageInfo: pageSize;
-}
+// export interface pageInfo {
+//   pageInfo: pageSize;
+// }
 
-export interface pageSize {
-  pageSize: number;
-}
+// export interface pageSize {
+//   pageSize: number;
+// }
 
-export interface Image {
-  url: string;
-  height: number;
-  width: number;
-}
+// export interface Image {
+//   url: string;
+//   height: number;
+//   width: number;
+// }
 
-export interface StoreApiResponse {
-  id: string;
-  title: string;
-  price: number;
-  description: string;
-  image: string;
-  creationAt: string;
-  updatedAt: string;
-  category: Category;
-}
+// export interface StoreApiResponse {
+//   id: string;
+//   title: string;
+//   price: number;
+//   description: string;
+//   image: string;
+//   creationAt: string;
+//   updatedAt: string;
+//   category: Category;
+// }
 
-export interface Category {
-  id: string;
-  name: string;
-  image: string;
-  creationAt: string;
-  updatedAt: string;
-}
+// export interface Category {
+//   id: string;
+//   name: string;
+//   image: string;
+//   creationAt: string;
+//   updatedAt: string;
+// }

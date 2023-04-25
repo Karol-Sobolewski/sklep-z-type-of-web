@@ -14,10 +14,18 @@ interface CartItem {
   qty: number;
 }
 
+interface OrderSummary {
+  // shipping: number;
+  totalPrice: number;
+  // name: string;
+  // qty: number;
+}
+
 interface CartState {
   items: CartItem[];
   addItemToCart: (item: CartItem) => void;
   removeItem: (id: CartItem["id"]) => void;
+  orderSummary: OrderSummary;
 }
 
 export const CartStateContext = createContext<CartState | null>(null);
@@ -45,7 +53,9 @@ export const CartStateContextProvider = ({
   children: ReactNode;
 }) => {
   const [cartItems, setCartItems] = useState<CartItem[] | undefined>(undefined);
-
+  const [orderSummary, setOrderSummary] = useState<OrderSummary>({
+    totalPrice: 0,
+  });
   useEffect(() => {
     setCartItems(getCartItemsFromStorage());
   }, []);
@@ -55,11 +65,17 @@ export const CartStateContextProvider = ({
       return;
     }
     getSetItemsInStorage(cartItems);
+
+    const calculateTotalPrice = cartItems
+      .map((product) => product.price * product.qty)
+      .reduce((partialSum, a) => partialSum + a, 0);
+    setOrderSummary({ totalPrice: calculateTotalPrice });
   }, [cartItems]);
 
   return (
     <CartStateContext.Provider
       value={{
+        orderSummary: orderSummary,
         items: cartItems || [],
         addItemToCart: (item: CartItem) => {
           setCartItems((prevState = []) => {
@@ -82,6 +98,7 @@ export const CartStateContextProvider = ({
               return existingItem;
             });
           });
+          // setOrderSummary({ ...orderSummary, id: 1 });
         },
         removeItem: (id) => {
           setCartItems((prevState = []) => {

@@ -1,7 +1,7 @@
 export type Props = {
   currentPage: number;
   paginate: (pageNumber: number) => void;
-  totalPages: number;
+  totalPages: number | null | undefined;
   minPageLimit: number;
   maxPageLimit: number;
 };
@@ -14,8 +14,10 @@ export default function Pagination({
   maxPageLimit,
 }: Props) {
   const pageNumbers = [];
-  for (let i = 1; i <= totalPages; i++) {
-    pageNumbers.push(i);
+  if (totalPages) {
+    for (let i = 1; i <= totalPages; i++) {
+      pageNumbers.push(i);
+    }
   }
 
   const handleDecrease = () => {
@@ -25,9 +27,11 @@ export default function Pagination({
   };
 
   const handleIncrease = () => {
-    if (currentPage < totalPages) {
-      paginate(currentPage + 1);
-    } else return;
+    if (totalPages) {
+      if (currentPage < totalPages) {
+        paginate(currentPage + 1);
+      } else return;
+    }
   };
 
   return (

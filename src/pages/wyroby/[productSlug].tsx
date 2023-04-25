@@ -12,6 +12,7 @@ import { gql } from "@apollo/client";
 import {
   GetProductBySlugDocument,
   GetProductBySlugQuery,
+  GetProductBySlugQueryVariables,
   GetProductsListDocument,
   GetProductsListQuery,
   GetProductsListQueryVariables,
@@ -86,7 +87,7 @@ export const getStaticProps = async ({
   // const data: StoreApiResponse | null = await res.json();
   const { data } = await apolloClient.query<
     GetProductBySlugQuery,
-    GetProductsListQueryVariables
+    GetProductBySlugQueryVariables
   >({
     variables: {
       slug: params.productSlug,

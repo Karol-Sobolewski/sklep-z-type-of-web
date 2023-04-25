@@ -2,19 +2,31 @@ import Image from "next/image";
 import Link from "next/link";
 import { useCartState } from "./Cart/CartContext";
 
+import {
+  GetProductBySlugDocument,
+  GetProductBySlugQuery,
+  GetProductsListDocument,
+  GetProductsListQuery,
+  GetProductsListQueryVariables,
+} from "../../../generated/graphql";
+import { apolloClient } from "@/graphql/apolloClient";
+
 interface ProductDetails {
   id: string;
   slug: string;
   name: string;
   description: string;
   price: number;
-  images: Image[];
+  images: Images[];
 }
 
-interface Image {
+// TODO: import fragmentu schema
+// console.log(`GetProductBySlugQuery`, GetProductBySlugQuery);
+interface Images {
+  __typename?: "Asset" | undefined;
   url: string;
-  height: number;
-  width: number;
+  height?: number | null | undefined;
+  width?: number | null | undefined;
 }
 
 interface ProductProps {
@@ -25,8 +37,8 @@ export default function ProductDetails({ data }: ProductProps) {
   return (
     <div className="bg-white block overflow-hidden group shadow-xl dark:border-gray-800 border-2 rounded-lg duration-500 transition-all hover:shadow-2xl">
       <Image
-        width={data.images[0].width}
-        height={data.images[0].height}
+        width={300}
+        height={200}
         style={{
           maxWidth: "100%",
           height: "auto",
@@ -45,7 +57,10 @@ export default function ProductDetails({ data }: ProductProps) {
         <p className="tracking-wider text-gray-900">{data.description}</p>
         <p className="mt-2">
           <span className="sr-only"> Regular Price </span>
-          <span className="tracking-wider text-gray-900"> {data.price} Zł</span>
+          <span className="tracking-wider text-gray-900">
+            {" "}
+            {data.price / 100} Zł
+          </span>
         </p>
       </div>
     </div>
@@ -67,8 +82,8 @@ export function ProductListItem({ data }: ProductListItemProps) {
     <div className="bg-white block overflow-hidden shadow-xl dark:border-gray-800 border-2 rounded-lg duration-500 transition-all hover:shadow-2xl">
       <Link href={`/wyroby/${data.slug}`} className="group">
         <Image
-          width={data.images[0].width}
-          height={data.images[0].height}
+          width={300}
+          height={200}
           style={{
             maxWidth: "100%",
             height: "auto",
@@ -90,7 +105,7 @@ export function ProductListItem({ data }: ProductListItemProps) {
 
             <span className="tracking-wider text-gray-900">
               {" "}
-              {data.price} Zł
+              {data.price / 100} Zł
             </span>
           </p>
         </div>

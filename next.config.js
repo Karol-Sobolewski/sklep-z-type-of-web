@@ -7,7 +7,6 @@ const nextConfig = {
   experimental: {
     gzipSize: true,
   },
-  //TODO
   async redirects() {
     return [
       {
