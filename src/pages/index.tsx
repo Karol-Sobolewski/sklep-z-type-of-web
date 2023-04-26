@@ -30,7 +30,6 @@ export default function Home() {
         },
       },
     });
-    // console.log(`data`, CreateProductReviewMutationResult);
   };
   return (
     <>

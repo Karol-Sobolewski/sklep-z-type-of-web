@@ -1,25 +1,34 @@
-import { FormEventHandler } from "react";
+import { FormEventHandler, useEffect } from "react";
 import { useForm } from "react-hook-form";
 import { validateCreditCartData } from "../../../utils";
 import { yupResolver } from "@hookform/resolvers/yup";
 import { setLocale } from "yup";
+import { v4 as uuidv4 } from "uuid";
 
 import * as yup from "yup";
+import { useCartState } from "./Cart/CartContext";
+import { useCreateNewOrderMutation } from "../../../generated/graphql";
+import Loading from "./Loading";
+import { useRouter } from "next/navigation";
 
 export default function CheckoutForm() {
+  const cartState = useCartState();
+  const [createOrder, { data, loading, error }] = useCreateNewOrderMutation();
+  console.log(`cartState`, cartState);
+  const { push } = useRouter();
   const checkoutFormSchema = yup
     .object({
       firstName: yup.string().required("Podaj imię"),
       lastName: yup.string().required("Podaj nazwisko"),
       emailAddress: yup
         .string()
-        .email("test")
+        .email("Podaj poprawny adres email")
         .required("Podaj poprawny adres email"),
       phone: yup.number().required("Podaj poprawny numer telefonu"),
       cardNumber: yup.number().required("Podaj poprawny numer karty"),
       cardExpiry: yup.string().required(),
       //TODO validate
-      cardCVC: yup.number().required(),
+      cardCVC: yup.number().required(validateCreditCartData),
 
       // cardCVC: yup.number().required().test(validateCreditCartData),
 
@@ -43,99 +52,105 @@ export default function CheckoutForm() {
   });
   type CheckoutFormData = yup.InferType<typeof checkoutFormSchema>;
 
-  const { register, setValue, handleSubmit, formState } =
+  const { register, setValue, handleSubmit, formState, reset } =
     useForm<CheckoutFormData>({
       resolver: yupResolver(checkoutFormSchema),
     });
-  const onSubmit = handleSubmit((data) => console.log(`submit`, formState));
+  const onSubmit = handleSubmit((data) => {
+    createOrder({
+      variables: {
+        order: {
+          stripeCheckoutId: uuidv4(),
+          email: data.emailAddress,
+          total: cartState.orderSummary.totalPrice,
+          orderItems: {
+            create: cartState.items.map((item) => ({
+              quantity: item.qty,
+              total: item.price,
+              product: {
+                connect: {
+                  id: item.id.toString(),
+                },
+              },
+            })),
+          },
+        },
+      },
+    });
+  });
+
+  useEffect(() => {
+    if (data) {
+      reset();
+      cartState.clearCart();
+      setTimeout(() => {
+        push("/");
+      }, 200);
+    }
+  }, [data]);
+
   return (
     <section>
+      {loading && <Loading />}
+      {error && <pre>{JSON.stringify(error, null, 2)}</pre>}
       <h1 className="sr-only">Checkout</h1>
 
       <div className="mx-auto grid max-w-screen-2xl grid-cols-1 md:grid-cols-2">
-        <div className="bg-gray-50 py-12 md:py-24">
+        <div className="bg-gray-50 dark:bg-gray-600 py-12 md:py-24">
           <div className="mx-auto max-w-lg space-y-8 px-4 lg:px-8">
-            <div className="flex items-center gap-4">
-              <span className="h-10 w-10 rounded-full bg-blue-700"></span>
-
-              <h2 className="font-medium text-gray-900">BambooYou</h2>
-            </div>
-
             <div>
-              <p className="text-2xl font-medium tracking-tight text-gray-900">
-                TOTAL PRICE
+              <p className="text-2xl font-medium tracking-tight text-gray-900 dark:text-gray-200">
+                Wartość zamówienia: {cartState.orderSummary.totalPrice / 100} zł
               </p>
 
-              <p className="mt-1 text-sm text-gray-600">Wyroby w zamówieniu</p>
+              <p className="mt-1 text-sm text-gray-600 dark:text-gray-300">
+                Wyroby w zamówieniu:
+              </p>
             </div>
 
             <div>
               <div className="flow-root">
                 <ul className="-my-4 divide-y divide-gray-100">
-                  <li className="flex items-center gap-4 py-4">
-                    <img
-                      src="https://images.unsplash.com/photo-1618354691373-d851c5c3a990?ixlib=rb-1.2.1&ixid=MnwxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8&auto=format&fit=crop&w=830&q=80"
-                      alt=""
-                      className="h-16 w-16 rounded object-cover"
-                    />
+                  {cartState.items.map((item) => (
+                    <li className="flex items-center gap-4 py-4" key={item.id}>
+                      <img
+                        src={item.images}
+                        alt=""
+                        className="h-16 w-16 rounded object-cover"
+                      />
 
-                    <div>
-                      <h3 className="text-sm text-gray-900">
-                        Basic Tee 6-Pack
-                      </h3>
+                      <div>
+                        <h3 className="text-sm text-gray-900 dark:text-gray-200">
+                          {item.name}
+                        </h3>
 
-                      <dl className="mt-0.5 space-y-px text-[10px] text-gray-600">
-                        <div>
-                          <dt className="inline">Size:</dt>
-                          <dd className="inline">XXS</dd>
-                        </div>
+                        {/* <dl className="mt-0.5 space-y-px text-[10px] text-gray-600 dark:text-gray-300">
+                          <div>
+                            <dt className="inline">Size:</dt>
+                            <dd className="inline">XXS</dd>
+                          </div>
 
-                        <div>
-                          <dt className="inline">Color:</dt>
-                          <dd className="inline">White</dd>
-                        </div>
-                      </dl>
-                    </div>
-                  </li>
-
-                  <li className="flex items-center gap-4 py-4">
-                    <img
-                      src="https://images.unsplash.com/photo-1618354691373-d851c5c3a990?ixlib=rb-1.2.1&ixid=MnwxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8&auto=format&fit=crop&w=830&q=80"
-                      alt=""
-                      className="h-16 w-16 rounded object-cover"
-                    />
-
-                    <div>
-                      <h3 className="text-sm text-gray-900">
-                        Basic Tee 6-Pack
-                      </h3>
-
-                      <dl className="mt-0.5 space-y-px text-[10px] text-gray-600">
-                        <div>
-                          <dt className="inline">Size:</dt>
-                          <dd className="inline">XXS</dd>
-                        </div>
-
-                        <div>
-                          <dt className="inline">Color:</dt>
-                          <dd className="inline">White</dd>
-                        </div>
-                      </dl>
-                    </div>
-                  </li>
+                          <div>
+                            <dt className="inline">Color:</dt>
+                            <dd className="inline">White</dd>
+                          </div>
+                        </dl> */}
+                      </div>
+                    </li>
+                  ))}
                 </ul>
               </div>
             </div>
           </div>
         </div>
 
-        <div className="bg-white py-12 md:py-24">
+        <div className="bg-white py-12 md:py-24 dark:bg-gray-700">
           <div className="mx-auto max-w-lg px-4 lg:px-8">
             <form className="grid grid-cols-6 gap-4" onSubmit={onSubmit}>
               <div className="col-span-3">
                 <label
                   htmlFor="firstName"
-                  className="block text-xs font-medium text-gray-700"
+                  className="block text-xs font-medium text-gray-700 dark:text-white"
                 >
                   Imię*
                 </label>
@@ -144,7 +159,7 @@ export default function CheckoutForm() {
                   autoComplete="given-name"
                   type="text"
                   id="firstName"
-                  className="mt-1 w-full rounded-md border-gray-200 shadow-sm sm:text-sm"
+                  className="mt-1 w-full rounded-md border-gray-200 shadow-sm sm:text-sm dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500"
                   {...register("firstName")}
                 />
               </div>
@@ -152,7 +167,7 @@ export default function CheckoutForm() {
               <div className="col-span-3">
                 <label
                   htmlFor="lastName"
-                  className="block text-xs font-medium text-gray-700"
+                  className="block text-xs font-medium text-gray-700 dark:text-white"
                 >
                   Nazwisko*
                 </label>
@@ -162,35 +177,34 @@ export default function CheckoutForm() {
                   type="text"
                   id="lastName"
                   {...register("lastName")}
-                  className="mt-1 w-full rounded-md border-gray-200 shadow-sm sm:text-sm"
+                  className="mt-1 w-full rounded-md border-gray-200 shadow-sm sm:text-sm dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500"
                 />
               </div>
 
               <div className="col-span-6">
                 <label
-                  htmlFor="email"
-                  className="block text-xs font-medium text-gray-700"
+                  htmlFor="emailAddress"
+                  className="block text-xs font-medium text-gray-700 dark:text-white"
                 >
                   Email*
                 </label>
 
                 <input
-                  //   autoComplete="email"
-                  //   type="email"
+                  autoComplete="email"
+                  type="text"
                   id="email"
                   {...register("emailAddress")}
-                  className="mt-1 w-full rounded-md border-gray-200 shadow-sm sm:text-sm"
+                  className="mt-1 w-full rounded-md border-gray-200 shadow-sm sm:text-sm dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500"
                 />
-                {/* {console.log(`error`, formState)} */}
-
-                <span role="alert" className="text-sm font-bold text-red-700">
+                <span role="alert" className="text-sm font-bold text-red-500">
                   {formState.errors.emailAddress?.message}
                 </span>
               </div>
+
               <div className="col-span-6">
                 <label
                   htmlFor="phone"
-                  className="block text-xs font-medium text-gray-700"
+                  className="block text-xs font-medium text-gray-700 dark:text-white"
                 >
                   Telefon
                 </label>
@@ -200,16 +214,19 @@ export default function CheckoutForm() {
                   type="tel"
                   id="phone"
                   {...register("phone")}
-                  className="mt-1 w-full rounded-md border-gray-200 shadow-sm sm:text-sm"
+                  className="mt-1 w-full rounded-md border-gray-200 shadow-sm sm:text-sm dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500"
                 />
+                <span role="alert" className="text-sm font-bold text-red-500">
+                  {formState.errors.phone?.message}
+                </span>
               </div>
 
               <fieldset className="col-span-6">
-                <legend className="block text-sm font-medium text-gray-700">
+                <legend className="block text-sm font-medium text-gray-700 dark:text-white">
                   Karta płatnicza
                 </legend>
 
-                <div className="mt-1 -space-y-px rounded-md bg-white shadow-sm">
+                <div className="mt-1 -space-y-px rounded-md bg-white shadow-sm dark:bg-gray-700">
                   <div>
                     <label htmlFor="cardNumber" className="sr-only">
                       {" "}
@@ -221,9 +238,15 @@ export default function CheckoutForm() {
                       id="cardNumber"
                       {...register("cardNumber")}
                       placeholder="Numer"
-                      className="relative mt-1 w-full rounded-t-md border-gray-200 focus:z-10 sm:text-sm"
+                      className="mt-1 w-full rounded-md border-gray-200 shadow-sm sm:text-sm dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500"
                       autoComplete="cc-number"
                     />
+                    <span
+                      role="alert"
+                      className="text-sm font-bold text-red-500"
+                    >
+                      {formState.errors.cardNumber?.message}
+                    </span>
                   </div>
 
                   <div className="flex">
@@ -237,17 +260,13 @@ export default function CheckoutForm() {
                         type="text"
                         autoComplete="cc-exp"
                         id="cardExpiry"
-                        {...register("cardExpiry", {
-                          required: "Podaj poprawną datę",
-                          //   pattern: /^\d\d\/\d\d$/,
-                          //   validate: validateCreditCartData,
-                        })}
+                        {...register("cardExpiry")}
                         placeholder="Data ważności (MM/YY)"
-                        className="relative w-full rounded-es-md border-gray-200 focus:z-10 sm:text-sm"
+                        className="mt-1 w-full rounded-md border-gray-200 shadow-sm sm:text-sm dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500"
                       />
                       <span
                         role="alert"
-                        className="text-sm font-bold text-red-700"
+                        className="text-sm font-bold text-red-600"
                       >
                         {formState.errors.cardExpiry?.message}
                       </span>
@@ -264,19 +283,25 @@ export default function CheckoutForm() {
                         id="cardCVC"
                         {...register("cardCVC")}
                         placeholder="CVC"
-                        className="relative w-full rounded-ee-md border-gray-200 focus:z-10 sm:text-sm"
+                        className="mt-1 w-full rounded-md border-gray-200 shadow-sm sm:text-sm dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500"
                       />
+                      <span
+                        role="alert"
+                        className="text-sm font-bold text-red-500"
+                      >
+                        {formState.errors.cardCVC?.message}
+                      </span>
                     </div>
                   </div>
                 </div>
               </fieldset>
 
               <fieldset className="col-span-6">
-                <legend className="block text-sm font-medium text-gray-700">
+                <legend className="block text-sm font-medium text-gray-700 dark:text-white">
                   Adres
                 </legend>
 
-                <div className="mt-1 -space-y-px rounded-md bg-white shadow-sm">
+                <div className="mt-1 -space-y-px rounded-md bg-white shadow-sm dark:bg-gray-700">
                   <div>
                     <label className="sr-only" htmlFor="street">
                       {" "}
@@ -289,7 +314,7 @@ export default function CheckoutForm() {
                       id="street"
                       {...register("street")}
                       placeholder="Ulica i nr*"
-                      className="relative w-full rounded-b-md border-gray-200 focus:z-10 sm:text-sm"
+                      className="mt-1 w-full rounded-md border-gray-200 shadow-sm sm:text-sm dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500"
                     />
                   </div>
 
@@ -305,7 +330,7 @@ export default function CheckoutForm() {
                       id="city"
                       {...register("city")}
                       placeholder="Miejscowość*"
-                      className="relative w-full rounded-b-md border-gray-200 focus:z-10 sm:text-sm"
+                      className="mt-1 w-full rounded-md border-gray-200 shadow-sm sm:text-sm dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500"
                     />
                   </div>
 
@@ -321,7 +346,7 @@ export default function CheckoutForm() {
                       id="postalCode"
                       {...register("postalCode")}
                       placeholder="Kod pocztowy*"
-                      className="relative w-full rounded-b-md border-gray-200 focus:z-10 sm:text-sm"
+                      className="mt-1 w-full rounded-md border-gray-200 shadow-sm sm:text-sm dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500"
                     />
                   </div>
                 </div>
@@ -329,7 +354,7 @@ export default function CheckoutForm() {
 
               <div className="col-span-6">
                 <button
-                  //   type="submit"
+                  type="submit"
                   className="block w-full rounded-md bg-black p-2.5 text-sm text-white transition hover:shadow-lg"
                 >
                   Złóż zamówienie
@@ -339,6 +364,11 @@ export default function CheckoutForm() {
           </div>
         </div>
       </div>
+      {data && (
+        <div className="w-60 fixed z-10 bottom-20 right-80 justify-center self-end py-5 px-5 md:py-4 bg-green-400">
+          Zamówienie złożone
+        </div>
+      )}
     </section>
   );
 }

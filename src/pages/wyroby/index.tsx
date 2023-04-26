@@ -57,7 +57,6 @@ export default function ProductsPage({
             {data.products.map((item) => (
               <li key={item.id}>
                 <ProductListItem data={item} />
-                {item.id}
               </li>
             ))}
           </ul>

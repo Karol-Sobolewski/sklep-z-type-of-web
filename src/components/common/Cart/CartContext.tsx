@@ -25,6 +25,7 @@ interface CartState {
   items: CartItem[];
   addItemToCart: (item: CartItem) => void;
   removeItem: (id: CartItem["id"]) => void;
+  clearCart: () => void;
   orderSummary: OrderSummary;
 }
 
@@ -117,6 +118,9 @@ export const CartStateContextProvider = ({
               return existingItem;
             });
           });
+        },
+        clearCart: () => {
+          setCartItems([]);
         },
       }}
     >
