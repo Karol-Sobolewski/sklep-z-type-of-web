@@ -14,7 +14,6 @@ import { useRouter } from "next/navigation";
 export default function CheckoutForm() {
   const cartState = useCartState();
   const [createOrder, { data, loading, error }] = useCreateNewOrderMutation();
-  console.log(`cartState`, cartState);
   const { push } = useRouter();
   const checkoutFormSchema = yup
     .object({

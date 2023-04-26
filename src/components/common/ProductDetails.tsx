@@ -39,13 +39,13 @@ interface Images {
 
 interface Review {
   __typename?: "Review" | undefined;
-  id: string | number;
+  id: string;
   headline: string | null | undefined;
   name: string | null | undefined;
   email: string | null | undefined;
   content: string | null | undefined;
-  rating: number | null | undefined;
-  createdAt: string | null | undefined;
+  rating?: number | null | undefined;
+  createdAt?: string;
 }
 
 interface ProductProps {

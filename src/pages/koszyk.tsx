@@ -6,7 +6,6 @@ import { useCartState } from "@/components/common/Cart/CartContext";
 
 export default function CartPage() {
   const cartState = useCartState();
-  console.log(`cartState`, cartState);
   // const totalPrice = cartState.products
   // .map((product) => (product.priceMonk + product.pricePoint) * product.qty)
   // .reduce((partialSum, a) => partialSum + a, 0);
