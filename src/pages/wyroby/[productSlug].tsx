@@ -40,6 +40,7 @@ export default function ProductPage({
             images: data.product.images,
             price: data.product.price,
             description: data.product.description,
+            // reviews: data.product.reviews,
           }}
         />
       </Main>
@@ -109,24 +110,24 @@ export const getStaticProps = async ({
   };
 };
 
-export interface StoreApiResponse {
-  id: string;
-  name: string;
-  price: number;
-  description: string;
-  image: string;
-  creationAt: string;
-  updatedAt: string;
-  category: Category;
-}
+// export interface StoreApiResponse {
+//   id: string;
+//   name: string;
+//   price: number;
+//   description: string;
+//   image: string;
+//   creationAt: string;
+//   updatedAt: string;
+//   category: Category;
+// }
 
-export interface Category {
-  id: string;
-  name: string;
-  image: string;
-  creationAt: string;
-  updatedAt: string;
-}
+// export interface Category {
+//   id: string;
+//   name: string;
+//   image: string;
+//   creationAt: string;
+//   updatedAt: string;
+// }
 
 // export interface GetProductBySlugResponse {
 //   product: Product;
