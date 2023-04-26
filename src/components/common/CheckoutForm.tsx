@@ -3,7 +3,7 @@ import { useForm } from "react-hook-form";
 import { validateCreditCartData } from "../../../utils";
 import { yupResolver } from "@hookform/resolvers/yup";
 import { setLocale } from "yup";
-import { v4 as uuidv4 } from "uuid";
+const { v4: uuidv4 } = require("uuid");
 
 import * as yup from "yup";
 import { useCartState } from "./Cart/CartContext";
