@@ -1,11 +1,11 @@
 import { FormEventHandler, useEffect } from "react";
 import { useForm } from "react-hook-form";
 import { validateCreditCartData } from "../../../utils";
+import * as yup from "yup";
 import { yupResolver } from "@hookform/resolvers/yup";
 import { setLocale } from "yup";
 const { v4: uuidv4 } = require("uuid");
 
-import * as yup from "yup";
 import { useCartState } from "./Cart/CartContext";
 import { useCreateNewOrderMutation } from "../../../generated/graphql";
 import Loading from "./Loading";

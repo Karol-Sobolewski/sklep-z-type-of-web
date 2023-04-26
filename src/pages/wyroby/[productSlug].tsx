@@ -33,14 +33,14 @@ export default function ProductPage({
       </Head>
       <Main>
         <ProductDetails
-          data={{
+          productData={{
             id: data.product.id,
             slug: data.product.slug,
             name: data.product.name,
             images: data.product.images,
             price: data.product.price,
             description: data.product.description,
-            // reviews: data.product.reviews,
+            reviews: data.product.reviews,
           }}
         />
       </Main>

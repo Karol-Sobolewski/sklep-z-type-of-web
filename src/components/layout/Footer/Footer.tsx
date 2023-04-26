@@ -17,7 +17,7 @@ export default function Footer() {
       <div className="px-4 py-16 sm:px-6 lg:col-span-3 lg:px-8">
         <div className="grid grid-cols-1 gap-8 sm:grid-cols-2">
           <div>
-            <p>
+            <address>
               <a
                 href="#"
                 className="block text-2xl mb-6 font-medium dark:text-gray-300 text-gray-900 hover:opacity-75 sm:text-3xl"
@@ -30,7 +30,7 @@ export default function Footer() {
                   Warszawa 00-141
                 </span>
               </a>
-            </p>
+            </address>
 
             <p>
               <span className="text-xs tracking-wide dark:text-white text-gray-500 uppercase">

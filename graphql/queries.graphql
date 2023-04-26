@@ -31,7 +31,15 @@ query GetProductBySlug($slug: String) {
       height
       width
     }
-    reviews
+    reviews {
+      id
+      headline
+      name
+      email
+      content
+      rating
+      createdAt
+    }
   }
 }
 
