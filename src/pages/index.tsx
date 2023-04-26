@@ -6,70 +6,32 @@ import Main from "@/components/layout/Main";
 import ProductBox from "@/components/common/ProductDetails";
 import { gql, useQuery } from "@apollo/client";
 import Loading from "@/components/common/Loading";
-const inter = Inter({ subsets: ["latin"] });
-
-const DATA = {
-  id: "1",
-  title: `Product 1`,
-  description: `Lorem ipsum dolor sit amet, consectetur adipiscing elit. Nam tristique
-  nibh ac massa congue, ac faucibus ex placerat. Aliquam eu fermentum
-  diam, vel tincidunt leo.`,
-  image: `https://picsum.photos/id/237/536/354`,
-  price: 100,
-};
-
-// interface ProductProps {
-//   data: {
-//     id: string;
-//     title: string;
-//     description: string;
-//     image: string;
-//     price?: number;
-//   };
-// }
-
-// { data }: ProductProps
-// const Product = () => {
-//   return (
-//     <a href="#" className="block overflow-hidden group">
-//       <img
-//         src={data.image}
-//         alt={data.title}
-//         className="h-[350px] w-full object-cover transition duration-500 group-hover:scale-105 sm:h-[450px]"
-//       />
-
-//       <div className="relative p-3 bg-white">
-//         <h3 className="text-xs text-gray-700 group-hover:underline group-hover:underline-offset-4">
-//           {data.title}
-//         </h3>
-
-//         <p className="mt-2">
-//           <span className="sr-only"> Regular Price </span>
-
-//           <span className="tracking-wider text-gray-900"> £24.00 GBP </span>
-//         </p>
-//       </div>
-//     </a>
-//   );
-// };
-
-const GET_PRODUCTS = gql`
-  query GetProductsList {
-    products {
-      id
-      slug
-      name
-      price
-    }
-  }
-`;
+import { apolloClient } from "@/graphql/apolloClient";
+import {
+  CreateProductReviewDocument,
+  CreateProductReviewMutation,
+  CreateProductReviewMutationVariables,
+  useCreateProductReviewMutation,
+} from "../../generated/graphql";
 
 export default function Home() {
-  const { loading, error, data } = useQuery(GET_PRODUCTS);
+  const [createReview, { data, loading, error }] =
+    useCreateProductReviewMutation();
 
-  // if (loading) return <Loading />;
-  if (error) return <Main>{JSON.stringify(error)}</Main>;
-
+  const addReview = () => {
+    createReview({
+      variables: {
+        review: {
+          headline: "Super22211111",
+          name: "Karol",
+          email: "karol@gmail.com",
+          content: "Super!!!1jeden",
+          rating: 5,
+        },
+      },
+    });
+    // console.log(`data`, CreateProductReviewMutationResult);
+  };
   return (
     <>
       <Head>
@@ -92,26 +54,13 @@ export default function Home() {
               fugit natus?
             </p>
           </div>
-          {/* <ul className="grid md:grid-cols-3 grid-cols-2 gap-6 pt-6"> */}
-          produkty:
-          <pre>{JSON.stringify(data, null, 2)}</pre>
-          {/* <li>
-              <ProductBox data={DATA} />
-            </li>
-            <li>
-              <ProductBox data={DATA} />
-            </li>
-            <li>
-              <ProductBox data={DATA} />
-            </li> */}
-          {/* </ul> */}
+          <button type="button" onClick={() => addReview()}>
+            Dodaj komentarz
+          </button>
+          {loading && <Loading />}
+          {error && <pre>{JSON.stringify(error, null, 2)}</pre>}
+          {data && <pre>{JSON.stringify(data, null, 2)}</pre>}
         </div>
-
-        {/* <div className="grid md:grid-cols-3 grid-cols-2 gap-6">
-         
-          <Product data={DATA} />
-          <Product data={DATA} />
-        </div> */}
       </Main>
     </>
   );
