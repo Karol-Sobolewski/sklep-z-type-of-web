@@ -11,8 +11,8 @@ if (req.method !== "POST") {
 }
 
 
-const MAILERLITE_API_KEY = process.env.MAILERLITE_API_KEY
-const MAILERLITE_GROUP_ID = process.env.MAILERLITE_GROUP_ID
+const MAILERLITE_API_KEY = process.env.NEXT_PUBLIC_MAILERLITE_API_KEY
+const MAILERLITE_GROUP_ID = process.env.NEXT_PUBLIC_MAILERLITE_GROUP_ID
 
 const email = req.body.email;
 
