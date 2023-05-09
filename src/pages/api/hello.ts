@@ -36,7 +36,7 @@ const response = await fetch(`https://api.mailerlite.com/api/v2/groups/${MAILERL
 if(!response.ok) {
   console.log(`error`)
   return res.status(500).json({
-    error: `Błąd przy zapisie do newslettera`,
+    error: `Błąd przy zapisie do newslettera!`,
   })
 }
 
