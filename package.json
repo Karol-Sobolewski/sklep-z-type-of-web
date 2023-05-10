@@ -6,7 +6,7 @@
   "version": "0.5.0",
   "private": true,
   "scripts": {
-    "dev": "yarn open-browser && next dev -p 3000",
+    "dev": "concurrently \"yarn open-browser && next dev -p 3000\" \"yarn generate-graphql --watch\"",
     "open-browser": "start http://localhost:3000",
     "build": "next build",
     "start": "next start",

@@ -13,6 +13,7 @@ import {
   CreateProductReviewMutationVariables,
   useCreateProductReviewMutation,
 } from "../../generated/graphql";
+import NewsletterForm from "@/components/common/NewsletterForm";
 
 export default function Home() {
   const [createReview, { data, loading, error }] =
@@ -31,6 +32,7 @@ export default function Home() {
       },
     });
   };
+
   return (
     <>
       <Head>
@@ -60,6 +62,7 @@ export default function Home() {
           {error && <pre>{JSON.stringify(error, null, 2)}</pre>}
           {data && <pre>{JSON.stringify(data, null, 2)}</pre>}
         </div>
+        <NewsletterForm />
       </Main>
     </>
   );

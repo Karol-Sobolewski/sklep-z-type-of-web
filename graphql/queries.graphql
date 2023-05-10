@@ -19,7 +19,17 @@ query GetProductsSlug {
   }
 }
 
-query GetProductBySlug($slug: String) {
+fragment reviewContent on Review {
+  id
+  headline
+  name
+  email
+  content
+  rating
+  createdAt
+}
+
+query GetProductBySlug($slug: String!) {
   product(where: { slug: $slug }) {
     id
     slug
@@ -32,13 +42,15 @@ query GetProductBySlug($slug: String) {
       width
     }
     reviews {
-      id
-      headline
-      name
-      email
-      content
-      rating
-      createdAt
+      ...reviewContent
+    }
+  }
+}
+
+query GetReviewsForProductBySlug($slug: String!) {
+  product(where: { slug: $slug }) {
+    reviews {
+      ...reviewContent
     }
   }
 }
