@@ -10781,7 +10781,7 @@ export type CreateProductReviewMutationVariables = Exact<{
 }>;
 
 
-export type CreateProductReviewMutation = { __typename?: 'Mutation', review?: { __typename?: 'Review', id: string, stage: Stage } | null };
+export type CreateProductReviewMutation = { __typename?: 'Mutation', review?: { __typename?: 'Review', id: string, headline: string, name: string, email: string, content: string, rating?: number | null, createdAt: any, stage: Stage } | null };
 
 export type CreateNewOrderMutationVariables = Exact<{
   order: OrderCreateInput;
@@ -10803,21 +10803,23 @@ export type GetProductsSlugQueryVariables = Exact<{ [key: string]: never; }>;
 
 export type GetProductsSlugQuery = { __typename?: 'Query', products: Array<{ __typename?: 'Product', slug: string }> };
 
-export type ReviewContentFragment = { __typename?: 'Review', id: string, headline: string, name: string, email: string, content: string, rating?: number | null, createdAt: any };
+export type ReviewContentFragment = { __typename?: 'Review', id: string, headline: string, name: string, email: string, content: string, rating?: number | null, createdAt: any, stage: Stage };
+
+export type ProductImageFragment = { __typename?: 'Asset', url: string, height?: number | null, width?: number | null };
 
 export type GetProductBySlugQueryVariables = Exact<{
   slug: Scalars['String'];
 }>;
 
 
-export type GetProductBySlugQuery = { __typename?: 'Query', product?: { __typename?: 'Product', id: string, slug: string, name: string, price: number, description: string, images: Array<{ __typename?: 'Asset', url: string, height?: number | null, width?: number | null }>, reviews: Array<{ __typename?: 'Review', id: string, headline: string, name: string, email: string, content: string, rating?: number | null, createdAt: any }> } | null };
+export type GetProductBySlugQuery = { __typename?: 'Query', product?: { __typename?: 'Product', id: string, slug: string, name: string, price: number, description: string, images: Array<{ __typename?: 'Asset', url: string, height?: number | null, width?: number | null }>, reviews: Array<{ __typename?: 'Review', id: string, headline: string, name: string, email: string, content: string, rating?: number | null, createdAt: any, stage: Stage }> } | null };
 
 export type GetReviewsForProductBySlugQueryVariables = Exact<{
   slug: Scalars['String'];
 }>;
 
 
-export type GetReviewsForProductBySlugQuery = { __typename?: 'Query', product?: { __typename?: 'Product', reviews: Array<{ __typename?: 'Review', id: string, headline: string, name: string, email: string, content: string, rating?: number | null, createdAt: any }> } | null };
+export type GetReviewsForProductBySlugQuery = { __typename?: 'Query', product?: { __typename?: 'Product', reviews: Array<{ __typename?: 'Review', id: string, headline: string, name: string, email: string, content: string, rating?: number | null, createdAt: any, stage: Stage }> } | null };
 
 export type GetProductsPagesQueryVariables = Exact<{ [key: string]: never; }>;
 
@@ -10833,16 +10835,23 @@ export const ReviewContentFragmentDoc = gql`
   content
   rating
   createdAt
+  stage
+}
+    `;
+export const ProductImageFragmentDoc = gql`
+    fragment ProductImage on Asset {
+  url
+  height
+  width
 }
     `;
 export const CreateProductReviewDocument = gql`
     mutation CreateProductReview($review: ReviewCreateInput!) {
   review: createReview(data: $review) {
-    id
-    stage
+    ...reviewContent
   }
 }
-    `;
+    ${ReviewContentFragmentDoc}`;
 export type CreateProductReviewMutationFn = Apollo.MutationFunction<CreateProductReviewMutation, CreateProductReviewMutationVariables>;
 
 /**
@@ -10990,16 +10999,15 @@ export const GetProductBySlugDocument = gql`
     price
     description
     images(first: 1) {
-      url
-      height
-      width
+      ...ProductImage
     }
     reviews {
       ...reviewContent
     }
   }
 }
-    ${ReviewContentFragmentDoc}`;
+    ${ProductImageFragmentDoc}
+${ReviewContentFragmentDoc}`;
 
 /**
  * __useGetProductBySlugQuery__

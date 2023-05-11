@@ -19,7 +19,7 @@ export default function CheckoutForm() {
     .object({
       firstName: yup.string().required("Podaj imię"),
       lastName: yup.string().required("Podaj nazwisko"),
-      emailAddress: yup
+      email: yup
         .string()
         .email("Podaj poprawny adres email")
         .required("Podaj poprawny adres email"),
@@ -60,7 +60,7 @@ export default function CheckoutForm() {
       variables: {
         order: {
           stripeCheckoutId: uuidv4(),
-          email: data.emailAddress,
+          email: data.email,
           total: cartState.orderSummary.totalPrice,
           orderItems: {
             create: cartState.items.map((item) => ({
@@ -182,7 +182,7 @@ export default function CheckoutForm() {
 
               <div className="col-span-6">
                 <label
-                  htmlFor="emailAddress"
+                  htmlFor="email"
                   className="block text-xs font-medium text-gray-700 dark:text-white"
                 >
                   Email*
@@ -192,11 +192,11 @@ export default function CheckoutForm() {
                   autoComplete="email"
                   type="text"
                   id="email"
-                  {...register("emailAddress")}
+                  {...register("email")}
                   className="mt-1 w-full rounded-md border-gray-200 shadow-sm sm:text-sm dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500"
                 />
                 <span role="alert" className="text-sm font-bold text-red-500">
-                  {formState.errors.emailAddress?.message}
+                  {formState.errors.email?.message}
                 </span>
               </div>
 

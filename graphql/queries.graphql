@@ -27,6 +27,13 @@ fragment reviewContent on Review {
   content
   rating
   createdAt
+  stage
+}
+
+fragment ProductImage on Asset {
+  url
+  height
+  width
 }
 
 query GetProductBySlug($slug: String!) {
@@ -37,9 +44,7 @@ query GetProductBySlug($slug: String!) {
     price
     description
     images(first: 1) {
-      url
-      height
-      width
+      ...ProductImage
     }
     reviews {
       ...reviewContent

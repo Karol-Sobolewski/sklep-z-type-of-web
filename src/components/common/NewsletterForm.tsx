@@ -49,7 +49,7 @@ export default function NewsletterForm() {
       <form onSubmit={onSubmit}>
         <div className="flex flex-col">
           <label
-            htmlFor="emailAddress"
+            htmlFor="email"
             className="block text-xs font-medium text-gray-700 dark:text-white"
           >
             Email*
