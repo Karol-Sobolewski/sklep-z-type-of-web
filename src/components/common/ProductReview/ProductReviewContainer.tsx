@@ -1,4 +1,7 @@
-import { ReviewContentFragment } from "../../../../generated/graphql";
+import {
+  ProductImageFragment,
+  ReviewContentFragment,
+} from "../../../../generated/graphql";
 import ProductReviewForm from "./ProductReviewForm";
 import ProductReviewList from "./ProductReviewList";
 
@@ -8,15 +11,8 @@ interface ProductDetails {
   name: string;
   description: string;
   price: number;
-  images: Images[];
+  images: ProductImageFragment[];
   reviews: ReviewContentFragment[];
-}
-
-interface Images {
-  __typename?: "Asset" | undefined;
-  url: string;
-  height?: number | null | undefined;
-  width?: number | null | undefined;
 }
 
 interface ProductReviewContainerProps {
