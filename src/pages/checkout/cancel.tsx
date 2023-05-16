@@ -6,20 +6,17 @@ import Main from "@/components/layout/Main";
 
 const inter = Inter({ subsets: ["latin"] });
 
-export default function FourOhFourPage() {
+export default function CheckoutCancelPage() {
   return (
     <>
       <Head>
-        <title>404</title>
+        <title>Błąd zamówienia</title>
         <meta name="description" content="404" />
         <meta name="viewport" content="width=device-width, initial-scale=1" />
         <link rel="icon" href="/favicon.ico" />
       </Head>
       <Main>
-        <div>
-          Nie znaleziono strony przejdź do  <Link href="/">strony głównej</Link>
-         
-        </div>
+        <div>Błąd zamówienia</div>
       </Main>
     </>
   );

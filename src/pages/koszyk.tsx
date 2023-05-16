@@ -3,12 +3,46 @@ import Image from "next/image";
 import Link from "next/link";
 import Main from "@/components/layout/Main";
 import { useCartState } from "@/components/common/Cart/CartContext";
+import { loadStripe } from "@stripe/stripe-js";
+import Stripe from "stripe";
+
+const stripePromise = loadStripe(
+  process.env.NEXT_PUBLIC_STRIPE_PUBLISHABLE_KEY!
+);
 
 export default function CartPage() {
   const cartState = useCartState();
   // const totalPrice = cartState.products
   // .map((product) => (product.priceMonk + product.pricePoint) * product.qty)
   // .reduce((partialSum, a) => partialSum + a, 0);
+
+  const pay = async () => {
+    const stripe = await stripePromise;
+
+    if (!stripe) {
+      throw new Error("Błąd");
+    }
+
+    const res = await fetch("/api/checkout", {
+      method: "POST",
+      headers: {
+        "Content-Type": "application/json",
+      },
+      body: JSON.stringify(
+        cartState.items.map((cartItem) => {
+          return {
+            slug: cartItem.slug,
+            qty: cartItem.qty,
+          };
+        })
+      ),
+    });
+
+    const { session }: { session: Stripe.Response<Stripe.Checkout.Session> } =
+      await res.json();
+
+    await stripe.redirectToCheckout({ sessionId: session.id });
+  };
   return (
     <>
       <Head>
@@ -41,7 +75,7 @@ export default function CartPage() {
                   {cartState.items.map((cartItem) => (
                     <li className="flex items-center gap-4" key={cartItem.id}>
                       <img
-                        src={cartItem.images}
+                        src={cartItem.image}
                         alt={cartItem.name}
                         className="h-16 w-16 rounded object-cover"
                       />
@@ -164,6 +198,14 @@ export default function CartPage() {
                       >
                         Dalej
                       </a>
+                    </div>
+                    <div className="flex justify-end">
+                      <button
+                        onClick={pay}
+                        className="block rounded bg-gray-700 px-5 py-3 text-sm text-gray-100 transition hover:bg-gray-600"
+                      >
+                        Zapłać ze STRIPE
+                      </button>
                     </div>
                   </div>
                 </div>

@@ -10814,6 +10814,13 @@ export type GetProductBySlugQueryVariables = Exact<{
 
 export type GetProductBySlugQuery = { __typename?: 'Query', product?: { __typename?: 'Product', id: string, slug: string, name: string, price: number, description: string, images: Array<{ __typename?: 'Asset', url: string, height?: number | null, width?: number | null }>, reviews: Array<{ __typename?: 'Review', id: string, headline: string, name: string, email: string, content: string, rating?: number | null, createdAt: any, stage: Stage }> } | null };
 
+export type GetProductBySlugForCheckoutQueryVariables = Exact<{
+  slug: Scalars['String'];
+}>;
+
+
+export type GetProductBySlugForCheckoutQuery = { __typename?: 'Query', product?: { __typename?: 'Product', id: string, slug: string, name: string, price: number, images: Array<{ __typename?: 'Asset', url: string, height?: number | null, width?: number | null }> } | null };
+
 export type GetReviewsForProductBySlugQueryVariables = Exact<{
   slug: Scalars['String'];
 }>;
@@ -11036,6 +11043,47 @@ export function useGetProductBySlugLazyQuery(baseOptions?: Apollo.LazyQueryHookO
 export type GetProductBySlugQueryHookResult = ReturnType<typeof useGetProductBySlugQuery>;
 export type GetProductBySlugLazyQueryHookResult = ReturnType<typeof useGetProductBySlugLazyQuery>;
 export type GetProductBySlugQueryResult = Apollo.QueryResult<GetProductBySlugQuery, GetProductBySlugQueryVariables>;
+export const GetProductBySlugForCheckoutDocument = gql`
+    query GetProductBySlugForCheckout($slug: String!) {
+  product(where: {slug: $slug}) {
+    id
+    slug
+    name
+    price
+    images(first: 1) {
+      ...ProductImage
+    }
+  }
+}
+    ${ProductImageFragmentDoc}`;
+
+/**
+ * __useGetProductBySlugForCheckoutQuery__
+ *
+ * To run a query within a React component, call `useGetProductBySlugForCheckoutQuery` and pass it any options that fit your needs.
+ * When your component renders, `useGetProductBySlugForCheckoutQuery` returns an object from Apollo Client that contains loading, error, and data properties
+ * you can use to render your UI.
+ *
+ * @param baseOptions options that will be passed into the query, supported options are listed on: https://www.apollographql.com/docs/react/api/react-hooks/#options;
+ *
+ * @example
+ * const { data, loading, error } = useGetProductBySlugForCheckoutQuery({
+ *   variables: {
+ *      slug: // value for 'slug'
+ *   },
+ * });
+ */
+export function useGetProductBySlugForCheckoutQuery(baseOptions: Apollo.QueryHookOptions<GetProductBySlugForCheckoutQuery, GetProductBySlugForCheckoutQueryVariables>) {
+        const options = {...defaultOptions, ...baseOptions}
+        return Apollo.useQuery<GetProductBySlugForCheckoutQuery, GetProductBySlugForCheckoutQueryVariables>(GetProductBySlugForCheckoutDocument, options);
+      }
+export function useGetProductBySlugForCheckoutLazyQuery(baseOptions?: Apollo.LazyQueryHookOptions<GetProductBySlugForCheckoutQuery, GetProductBySlugForCheckoutQueryVariables>) {
+          const options = {...defaultOptions, ...baseOptions}
+          return Apollo.useLazyQuery<GetProductBySlugForCheckoutQuery, GetProductBySlugForCheckoutQueryVariables>(GetProductBySlugForCheckoutDocument, options);
+        }
+export type GetProductBySlugForCheckoutQueryHookResult = ReturnType<typeof useGetProductBySlugForCheckoutQuery>;
+export type GetProductBySlugForCheckoutLazyQueryHookResult = ReturnType<typeof useGetProductBySlugForCheckoutLazyQuery>;
+export type GetProductBySlugForCheckoutQueryResult = Apollo.QueryResult<GetProductBySlugForCheckoutQuery, GetProductBySlugForCheckoutQueryVariables>;
 export const GetReviewsForProductBySlugDocument = gql`
     query GetReviewsForProductBySlug($slug: String!) {
   product(where: {slug: $slug}) {

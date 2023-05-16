@@ -3,23 +3,25 @@ import Image from "next/image";
 import { Inter } from "next/font/google";
 import Link from "next/link";
 import Main from "@/components/layout/Main";
+import { useRouter } from "next/router";
 
 const inter = Inter({ subsets: ["latin"] });
 
-export default function FourOhFourPage() {
+export default function CheckoutSuccessPage() {
+  const router = useRouter();
+
+  // router.query.session_id
+
   return (
     <>
       <Head>
-        <title>404</title>
+        <title>Zamówienie poprawne</title>
         <meta name="description" content="404" />
         <meta name="viewport" content="width=device-width, initial-scale=1" />
         <link rel="icon" href="/favicon.ico" />
       </Head>
       <Main>
-        <div>
-          Nie znaleziono strony przejdź do  <Link href="/">strony głównej</Link>
-         
-        </div>
+        <div>Przetwarzanie zamówienia</div>
       </Main>
     </>
   );
