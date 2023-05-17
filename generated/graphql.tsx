@@ -10788,7 +10788,7 @@ export type CreateNewOrderMutationVariables = Exact<{
 }>;
 
 
-export type CreateNewOrderMutation = { __typename?: 'Mutation', order?: { __typename?: 'Order', id: string } | null };
+export type CreateNewOrderMutation = { __typename?: 'Mutation', order?: { __typename?: 'Order', id: string, stage: Stage, total: number, stripeCheckoutId: string } | null };
 
 export type GetProductsListQueryVariables = Exact<{
   first?: InputMaybe<Scalars['Int']>;
@@ -10889,6 +10889,9 @@ export const CreateNewOrderDocument = gql`
     mutation CreateNewOrder($order: OrderCreateInput!) {
   order: createOrder(data: $order) {
     id
+    stage
+    total
+    stripeCheckoutId
   }
 }
     `;

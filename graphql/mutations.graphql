@@ -7,5 +7,8 @@ mutation CreateProductReview($review: ReviewCreateInput!) {
 mutation CreateNewOrder($order: OrderCreateInput!) {
   order: createOrder(data: $order) {
     id
+    stage
+    total
+    stripeCheckoutId
   }
 }

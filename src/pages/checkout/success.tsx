@@ -8,7 +8,7 @@ import { useRouter } from "next/router";
 const inter = Inter({ subsets: ["latin"] });
 
 export default function CheckoutSuccessPage() {
-  const router = useRouter();
+  const { query } = useRouter();
 
   // router.query.session_id
 
@@ -22,6 +22,7 @@ export default function CheckoutSuccessPage() {
       </Head>
       <Main>
         <div>Przetwarzanie zamówienia</div>
+        <div>{query?.session_id}</div>
       </Main>
     </>
   );
