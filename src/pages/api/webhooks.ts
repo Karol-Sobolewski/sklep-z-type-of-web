@@ -4,6 +4,7 @@ import Stripe from "stripe";
 import { StripeWebhookEvents } from "../../../stripeEvents";
 
 const stripeWebhook: NextApiHandler = async (req, res) => {
+  console.log(req.body);
   //   let event = req.body as StripeWebhookEvents;
   //TODO: verify signing secret
   //return

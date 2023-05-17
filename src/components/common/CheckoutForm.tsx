@@ -113,7 +113,7 @@ export default function CheckoutForm() {
                   {cartState.items.map((item) => (
                     <li className="flex items-center gap-4 py-4" key={item.id}>
                       <img
-                        src={item.images}
+                        src={item.image}
                         alt=""
                         className="h-16 w-16 rounded object-cover"
                       />

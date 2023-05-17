@@ -5,12 +5,12 @@ import Link from "next/link";
 import Main from "@/components/layout/Main";
 import { useRouter } from "next/router";
 
+import Stripe from "stripe";
+
 const inter = Inter({ subsets: ["latin"] });
 
 export default function CheckoutSuccessPage() {
   const { query } = useRouter();
-
-  // router.query.session_id
 
   return (
     <>

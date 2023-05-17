@@ -5,7 +5,7 @@ import { useMutation } from "@tanstack/react-query";
 
 const useAddToNewsletterMutation = () =>
   useMutation(async ({ email }: { email: string }) => {
-    await fetch("https://sklepzakonny.vercel.app/api/hello/", {
+    await fetch("http://localhost:3000/api/hello/", {
       method: "POST",
       headers: { "Content-Type": "application/json" },
       body: JSON.stringify({ email }),

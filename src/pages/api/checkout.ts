@@ -70,8 +70,8 @@ const checkoutHandler: NextApiHandler = async (req, res) => {
     locale: "pl",
     payment_method_types: ["p24", "card"],
     success_url:
-      "https://sklepzakonny.vercel.app/checkout/success?session_id={CHECKOUT_SESSION_ID}",
-    cancel_url: "https://sklepzakonny.vercel.app/checkout/cancel",
+      "http://localhost:3000/checkout/success?session_id={CHECKOUT_SESSION_ID}",
+    cancel_url: "http://localhost:3000/checkout/cancel",
     line_items: products.map((product) => {
       return {
         adjustable_quantity: {
