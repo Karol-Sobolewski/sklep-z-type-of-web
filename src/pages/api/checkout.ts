@@ -1,4 +1,4 @@
-import { apolloClient } from "@/graphql/apolloClient";
+import { apolloClient, authApolloClient } from "@/graphql/apolloClient";
 import { NextApiHandler } from "next";
 import { Stripe } from "stripe";
 import {
@@ -22,7 +22,7 @@ const checkoutHandler: NextApiHandler = async (req, res) => {
 
   const products = await Promise.all(
     body.map(async (cartItem) => {
-      const apiProduct = await apolloClient.query<
+      const apiProduct = await authApolloClient.query<
         GetProductBySlugForCheckoutQuery,
         GetProductBySlugForCheckoutQueryVariables
       >({

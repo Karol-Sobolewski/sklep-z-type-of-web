@@ -2,18 +2,27 @@ import { NextApiHandler } from "next";
 import { buffer } from "micro";
 import Stripe from "stripe";
 import { StripeWebhookEvents } from "../../../stripeEvents";
+import { authApolloClient } from "@/graphql/apolloClient";
+import {
+  CreateNewOrderDocument,
+  CreateNewOrderMutation,
+  CreateNewOrderMutationVariables,
+} from "../../../generated/graphql";
 
 const stripeWebhook: NextApiHandler = async (req, res) => {
-  console.log(req.body);
+  console.log(`req`, req.body);
   //   let event = req.body as StripeWebhookEvents;
   //TODO: verify signing secret
   //return
 
   const stripeSecretKey = process.env.STRIPE_SECRET_KEY;
   const stripeWebhookKey = process.env.STRIPE_WEBHOOK_SECRET;
+  console.log(`test`);
 
   if (!stripeSecretKey || !stripeWebhookKey) {
-    res.status(500).end();
+    // res.status(500).end();
+    console.log(`error`);
+
     return;
   }
 
@@ -22,10 +31,11 @@ const stripeWebhook: NextApiHandler = async (req, res) => {
   const signature = req.headers["stripe-signature"] as string;
 
   let event;
-  //   console.log(event);
   //   if (e.type === "checkout.session.completed") {
   //     event.data.object.success_url;
   //   }
+
+  console.log({ event, stripe, req, res });
 
   try {
     event = stripe.webhooks.constructEvent(buf, signature, stripeWebhookKey);
@@ -38,6 +48,22 @@ const stripeWebhook: NextApiHandler = async (req, res) => {
     case "checkout.session.completed":
       //TODO: zaktualizuj zamówienie w hygraph
       console.log(`Zaktualizuj zamówienie`);
+
+      await authApolloClient.mutate<
+        CreateNewOrderMutation,
+        CreateNewOrderMutationVariables
+      >({
+        mutation: CreateNewOrderDocument,
+        variables: {
+          order: {
+            email: "",
+            stripeCheckoutId: req.body.data.object.id,
+            total: req.body.data.object.amount,
+            state: "PUBLISHED",
+          },
+        },
+      });
+
       res.json({ received: true });
       return;
   }
