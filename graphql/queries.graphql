@@ -1,3 +1,14 @@
+fragment productContent on Product {
+  id
+  slug
+  name
+  price
+  description
+  images(first: 1) {
+    ...ProductImage
+  }
+}
+
 query GetProductsList($first: Int, $skip: Int) {
   products(first: $first, skip: $skip) {
     id
@@ -28,6 +39,12 @@ fragment reviewContent on Review {
   rating
   createdAt
   stage
+}
+
+fragment orderContent on Order {
+  id
+  total
+  state
 }
 
 fragment ProductImage on Asset {
@@ -85,5 +102,28 @@ query GetAccountByEmail($email: String!) {
     id
     email
     password
+  }
+}
+
+query GetOrdersForAccount($email: String!) {
+  account(where: { email: $email }) {
+    id
+    orders {
+      id
+      stripeCheckoutId
+      state
+      orderItems {
+        id
+        product {
+          id
+          name
+          price
+          images(first: 1) {
+            id
+            url
+          }
+        }
+      }
+    }
   }
 }

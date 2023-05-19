@@ -4,16 +4,22 @@ import Link from "next/link";
 import Main from "@/components/layout/Main";
 import { useSession, signIn, signOut } from "next-auth/react";
 import { useRouter } from "next/router";
+import { useGetOrdersForAccountQuery } from "../../generated/graphql";
+import Loading from "@/components/common/Loading";
+import UserOrderList from "@/components/common/UserOrderList";
 
 export default function Account() {
   const session = useSession();
   const router = useRouter();
 
+  //TODO: protected route
+
   if (session.status === "unauthenticated") {
-    // session.data
     signIn();
-    // router.push(`/login`);
   } else {
+    if (!session.data) {
+      return <Loading />;
+    }
     return (
       <>
         <Head>
@@ -24,6 +30,7 @@ export default function Account() {
         </Head>
         <Main>
           <div>Dzień dobry {session.data?.user.email}</div>
+          <UserOrderList />
         </Main>
       </>
     );

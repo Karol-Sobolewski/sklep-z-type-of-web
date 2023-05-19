@@ -10,6 +10,7 @@ import { useCartState } from "./Cart/CartContext";
 import { useCreateNewOrderMutation } from "../../../generated/graphql";
 import Loading from "./Loading";
 import { useRouter } from "next/navigation";
+import { useSession } from "next-auth/react";
 
 export default function CheckoutForm() {
   const cartState = useCartState();
@@ -55,6 +56,9 @@ export default function CheckoutForm() {
     useForm<CheckoutFormData>({
       resolver: yupResolver(checkoutFormSchema),
     });
+
+  const session = useSession();
+
   const onSubmit = handleSubmit((data) => {
     createOrder({
       variables: {
@@ -72,6 +76,11 @@ export default function CheckoutForm() {
                 },
               },
             })),
+          },
+          account: {
+            connect: {
+              email: session.data?.user.email,
+            },
           },
         },
       },
@@ -93,7 +102,7 @@ export default function CheckoutForm() {
       {loading && <Loading />}
       {error && <pre>{JSON.stringify(error, null, 2)}</pre>}
       <h1 className="sr-only">Checkout</h1>
-
+      {session.data?.user.id}
       <div className="mx-auto grid max-w-screen-2xl grid-cols-1 md:grid-cols-2">
         <div className="bg-gray-50 dark:bg-gray-600 py-12 md:py-24">
           <div className="mx-auto max-w-lg space-y-8 px-4 lg:px-8">
@@ -193,6 +202,7 @@ export default function CheckoutForm() {
                   type="text"
                   id="email"
                   {...register("email")}
+                  defaultValue={session.data?.user.email}
                   className="mt-1 w-full rounded-md border-gray-200 shadow-sm sm:text-sm dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500"
                 />
                 <span role="alert" className="text-sm font-bold text-red-500">

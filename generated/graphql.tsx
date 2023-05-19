@@ -36,6 +36,7 @@ export type Account = Node & {
   history: Array<Version>;
   /** The unique identifier */
   id: Scalars['ID'];
+  orders: Array<Order>;
   password: Scalars['String'];
   /** The time the document was published. Null on documents in draft stage. */
   publishedAt?: Maybe<Scalars['DateTime']>;
@@ -68,6 +69,19 @@ export type AccountHistoryArgs = {
   limit?: Scalars['Int'];
   skip?: Scalars['Int'];
   stageOverride?: InputMaybe<Stage>;
+};
+
+
+export type AccountOrdersArgs = {
+  after?: InputMaybe<Scalars['String']>;
+  before?: InputMaybe<Scalars['String']>;
+  first?: InputMaybe<Scalars['Int']>;
+  forceParentLocale?: InputMaybe<Scalars['Boolean']>;
+  last?: InputMaybe<Scalars['Int']>;
+  locales?: InputMaybe<Array<Locale>>;
+  orderBy?: InputMaybe<OrderOrderByInput>;
+  skip?: InputMaybe<Scalars['Int']>;
+  where?: InputMaybe<OrderWhereInput>;
 };
 
 
@@ -114,6 +128,7 @@ export type AccountConnection = {
 export type AccountCreateInput = {
   createdAt?: InputMaybe<Scalars['DateTime']>;
   email: Scalars['String'];
+  orders?: InputMaybe<OrderCreateManyInlineInput>;
   password: Scalars['String'];
   updatedAt?: InputMaybe<Scalars['DateTime']>;
 };
@@ -208,6 +223,9 @@ export type AccountManyWhereInput = {
   id_not_starts_with?: InputMaybe<Scalars['ID']>;
   /** All values starting with the given string. */
   id_starts_with?: InputMaybe<Scalars['ID']>;
+  orders_every?: InputMaybe<OrderWhereInput>;
+  orders_none?: InputMaybe<OrderWhereInput>;
+  orders_some?: InputMaybe<OrderWhereInput>;
   password?: InputMaybe<Scalars['String']>;
   /** All values containing the given string. */
   password_contains?: InputMaybe<Scalars['String']>;
@@ -281,6 +299,7 @@ export enum AccountOrderByInput {
 
 export type AccountUpdateInput = {
   email?: InputMaybe<Scalars['String']>;
+  orders?: InputMaybe<OrderUpdateManyInlineInput>;
   password?: InputMaybe<Scalars['String']>;
 };
 
@@ -421,6 +440,9 @@ export type AccountWhereInput = {
   id_not_starts_with?: InputMaybe<Scalars['ID']>;
   /** All values starting with the given string. */
   id_starts_with?: InputMaybe<Scalars['ID']>;
+  orders_every?: InputMaybe<OrderWhereInput>;
+  orders_none?: InputMaybe<OrderWhereInput>;
+  orders_some?: InputMaybe<OrderWhereInput>;
   password?: InputMaybe<Scalars['String']>;
   /** All values containing the given string. */
   password_contains?: InputMaybe<Scalars['String']>;
@@ -5120,6 +5142,7 @@ export type Node = {
 
 export type Order = Node & {
   __typename?: 'Order';
+  account?: Maybe<Account>;
   /** The time the document was created */
   createdAt: Scalars['DateTime'];
   /** User that created this document */
@@ -5147,6 +5170,12 @@ export type Order = Node & {
   updatedAt: Scalars['DateTime'];
   /** User that last updated this document */
   updatedBy?: Maybe<User>;
+};
+
+
+export type OrderAccountArgs = {
+  forceParentLocale?: InputMaybe<Scalars['Boolean']>;
+  locales?: InputMaybe<Array<Locale>>;
 };
 
 
@@ -5224,6 +5253,7 @@ export type OrderConnection = {
 };
 
 export type OrderCreateInput = {
+  account?: InputMaybe<AccountCreateOneInlineInput>;
   createdAt?: InputMaybe<Scalars['DateTime']>;
   email: Scalars['String'];
   firstName?: InputMaybe<Scalars['String']>;
@@ -5747,6 +5777,7 @@ export type OrderManyWhereInput = {
   OR?: InputMaybe<Array<OrderWhereInput>>;
   /** Contains search across all appropriate fields. */
   _search?: InputMaybe<Scalars['String']>;
+  account?: InputMaybe<AccountWhereInput>;
   createdAt?: InputMaybe<Scalars['DateTime']>;
   /** All values greater than the given value. */
   createdAt_gt?: InputMaybe<Scalars['DateTime']>;
@@ -5938,6 +5969,7 @@ export enum OrderOrderByInput {
 }
 
 export type OrderUpdateInput = {
+  account?: InputMaybe<AccountUpdateOneInlineInput>;
   email?: InputMaybe<Scalars['String']>;
   firstName?: InputMaybe<Scalars['String']>;
   orderItems?: InputMaybe<OrderItemUpdateManyInlineInput>;
@@ -6030,6 +6062,7 @@ export type OrderWhereInput = {
   OR?: InputMaybe<Array<OrderWhereInput>>;
   /** Contains search across all appropriate fields. */
   _search?: InputMaybe<Scalars['String']>;
+  account?: InputMaybe<AccountWhereInput>;
   createdAt?: InputMaybe<Scalars['DateTime']>;
   /** All values greater than the given value. */
   createdAt_gt?: InputMaybe<Scalars['DateTime']>;
@@ -11568,6 +11601,8 @@ export type CreateAccountMutationVariables = Exact<{
 
 export type CreateAccountMutation = { __typename?: 'Mutation', createAccount?: { __typename?: 'Account', id: string } | null };
 
+export type ProductContentFragment = { __typename?: 'Product', id: string, slug: string, name: string, price: number, description: string, images: Array<{ __typename?: 'Asset', url: string, height?: number | null, width?: number | null }> };
+
 export type GetProductsListQueryVariables = Exact<{
   first?: InputMaybe<Scalars['Int']>;
   skip?: InputMaybe<Scalars['Int']>;
@@ -11582,6 +11617,8 @@ export type GetProductsSlugQueryVariables = Exact<{ [key: string]: never; }>;
 export type GetProductsSlugQuery = { __typename?: 'Query', products: Array<{ __typename?: 'Product', slug: string }> };
 
 export type ReviewContentFragment = { __typename?: 'Review', id: string, headline: string, name: string, email: string, content: string, rating?: number | null, createdAt: any, stage: Stage };
+
+export type OrderContentFragment = { __typename?: 'Order', id: string, total: number, state?: string | null };
 
 export type ProductImageFragment = { __typename?: 'Asset', url: string, height?: number | null, width?: number | null };
 
@@ -11618,6 +11655,32 @@ export type GetAccountByEmailQueryVariables = Exact<{
 
 export type GetAccountByEmailQuery = { __typename?: 'Query', account?: { __typename?: 'Account', id: string, email: string, password: string } | null };
 
+export type GetOrdersForAccountQueryVariables = Exact<{
+  email: Scalars['String'];
+}>;
+
+
+export type GetOrdersForAccountQuery = { __typename?: 'Query', account?: { __typename?: 'Account', id: string, orders: Array<{ __typename?: 'Order', id: string, stripeCheckoutId: string, state?: string | null, orderItems: Array<{ __typename?: 'OrderItem', id: string, product?: { __typename?: 'Product', id: string, name: string, price: number, images: Array<{ __typename?: 'Asset', id: string, url: string }> } | null }> }> } | null };
+
+export const ProductImageFragmentDoc = gql`
+    fragment ProductImage on Asset {
+  url
+  height
+  width
+}
+    `;
+export const ProductContentFragmentDoc = gql`
+    fragment productContent on Product {
+  id
+  slug
+  name
+  price
+  description
+  images(first: 1) {
+    ...ProductImage
+  }
+}
+    ${ProductImageFragmentDoc}`;
 export const ReviewContentFragmentDoc = gql`
     fragment reviewContent on Review {
   id
@@ -11630,11 +11693,11 @@ export const ReviewContentFragmentDoc = gql`
   stage
 }
     `;
-export const ProductImageFragmentDoc = gql`
-    fragment ProductImage on Asset {
-  url
-  height
-  width
+export const OrderContentFragmentDoc = gql`
+    fragment orderContent on Order {
+  id
+  total
+  state
 }
     `;
 export const CreateProductReviewDocument = gql`
@@ -12016,3 +12079,55 @@ export function useGetAccountByEmailLazyQuery(baseOptions?: Apollo.LazyQueryHook
 export type GetAccountByEmailQueryHookResult = ReturnType<typeof useGetAccountByEmailQuery>;
 export type GetAccountByEmailLazyQueryHookResult = ReturnType<typeof useGetAccountByEmailLazyQuery>;
 export type GetAccountByEmailQueryResult = Apollo.QueryResult<GetAccountByEmailQuery, GetAccountByEmailQueryVariables>;
+export const GetOrdersForAccountDocument = gql`
+    query GetOrdersForAccount($email: String!) {
+  account(where: {email: $email}) {
+    id
+    orders {
+      id
+      stripeCheckoutId
+      state
+      orderItems {
+        id
+        product {
+          id
+          name
+          price
+          images(first: 1) {
+            id
+            url
+          }
+        }
+      }
+    }
+  }
+}
+    `;
+
+/**
+ * __useGetOrdersForAccountQuery__
+ *
+ * To run a query within a React component, call `useGetOrdersForAccountQuery` and pass it any options that fit your needs.
+ * When your component renders, `useGetOrdersForAccountQuery` returns an object from Apollo Client that contains loading, error, and data properties
+ * you can use to render your UI.
+ *
+ * @param baseOptions options that will be passed into the query, supported options are listed on: https://www.apollographql.com/docs/react/api/react-hooks/#options;
+ *
+ * @example
+ * const { data, loading, error } = useGetOrdersForAccountQuery({
+ *   variables: {
+ *      email: // value for 'email'
+ *   },
+ * });
+ */
+export function useGetOrdersForAccountQuery(baseOptions: Apollo.QueryHookOptions<GetOrdersForAccountQuery, GetOrdersForAccountQueryVariables>) {
+        const options = {...defaultOptions, ...baseOptions}
+        return Apollo.useQuery<GetOrdersForAccountQuery, GetOrdersForAccountQueryVariables>(GetOrdersForAccountDocument, options);
+      }
+export function useGetOrdersForAccountLazyQuery(baseOptions?: Apollo.LazyQueryHookOptions<GetOrdersForAccountQuery, GetOrdersForAccountQueryVariables>) {
+          const options = {...defaultOptions, ...baseOptions}
+          return Apollo.useLazyQuery<GetOrdersForAccountQuery, GetOrdersForAccountQueryVariables>(GetOrdersForAccountDocument, options);
+        }
+export type GetOrdersForAccountQueryHookResult = ReturnType<typeof useGetOrdersForAccountQuery>;
+export type GetOrdersForAccountLazyQueryHookResult = ReturnType<typeof useGetOrdersForAccountLazyQuery>;
+export type GetOrdersForAccountQueryResult = Apollo.QueryResult<GetOrdersForAccountQuery, GetOrdersForAccountQueryVariables>;
