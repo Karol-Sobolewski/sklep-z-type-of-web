@@ -11,7 +11,7 @@ import { authApolloClient } from "@/graphql/apolloClient";
 const OrderHistoryHandler: NextApiHandler = async (req, res) => {
   const session = await getServerSession(req, res, authOptions);
 
-  //   console.log(`session`, session);
+  console.log(`session`, session);
   if (!session) {
     console.log(`error`);
     return res.status(500).end();

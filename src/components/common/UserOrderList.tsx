@@ -24,7 +24,7 @@ export default function UserOrderList() {
       },
       credentials: "include",
     });
-    console.log(`orderFetch`, orderFetch);
+    console.log(`orderFetch`, orderFetch.body);
   };
 
   useEffect(() => {

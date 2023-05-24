@@ -64,14 +64,14 @@ const checkoutHandler: NextApiHandler = async (req, res) => {
   //   );
 
   const stripe = new Stripe(stripeSecretKey, { apiVersion: "2022-11-15" });
-
+  const successUrl = `${process.env.NEXT_PUBLIC_STRIPE_URL}/success`;
+  const cancelUrl = `${process.env.NEXT_PUBLIC_STRIPE_URL}/cancel`;
   const stripeCheckoutSession = await stripe.checkout.sessions.create({
     mode: "payment",
     locale: "pl",
     payment_method_types: ["p24", "card"],
-    success_url:
-      "http://localhost:3000/checkout/success?session_id={CHECKOUT_SESSION_ID}",
-    cancel_url: "http://localhost:3000/checkout/cancel",
+    success_url: `${successUrl}?session_id={CHECKOUT_SESSION_ID}`,
+    cancel_url: cancelUrl,
     line_items: products.map((product) => {
       return {
         adjustable_quantity: {
