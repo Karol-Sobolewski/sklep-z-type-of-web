@@ -1,5 +1,5 @@
 import Head from "next/head";
-import Image from "next/legacy/image";
+import Image from "next/image";
 import Link from "next/link";
 import Main from "@/components/layout/Main";
 import { useCartState } from "@/components/common/Cart/CartContext";

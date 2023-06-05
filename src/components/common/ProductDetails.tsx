@@ -1,4 +1,4 @@
-import Image from "next/legacy/image";
+import Image from "next/image";
 import Link from "next/link";
 import { useCartState } from "./Cart/CartContext";
 
@@ -29,42 +29,41 @@ interface ProductProps {
 }
 
 export default function ProductDetails({ productData }: ProductProps) {
-  return (
-    <>
-      <div className="bg-white block overflow-hidden group shadow-xl dark:border-gray-800 border-2 rounded-lg duration-500 transition-all hover:shadow-2xl">
-        <Image
-          width={300}
-          // width={productData.images[0].width}
-          height={200}
-          style={{
-            maxWidth: "100%",
-            height: "auto",
-            aspectRatio: "16/9",
-            objectFit: "contain",
-          }}
-          src={productData.images[0].url}
-          alt={productData.name}
-          className="h-[350px] w-full object-cover transition duration-500 group-hover:scale-105 sm:h-[450px]"
-        />
-        <div className="relative p-3 bg-white">
-          <h3 className="text-xs text-gray-700 group-hover:underline group-hover:underline-offset-4">
-            {productData.name}
-          </h3>
-          <p className="tracking-wider text-gray-900">
-            {productData.description}
-          </p>
-          <p className="mt-2">
-            <span className="sr-only"> Regular Price </span>
-            <span className="tracking-wider text-gray-900">
-              {" "}
-              {productData.price / 100} Zł
-            </span>
-          </p>
-        </div>
+  return <>
+    <div className="bg-white block overflow-hidden group shadow-xl dark:border-gray-800 border-2 rounded-lg duration-500 transition-all hover:shadow-2xl">
+      <Image
+        width={300}
+        // width={productData.images[0].width}
+        height={200}
+        src={productData.images[0].url}
+        alt={productData.name}
+        className="h-[350px] w-full object-cover transition duration-500 group-hover:scale-105 sm:h-[450px]"
+        style={{
+          maxWidth: "100%",
+          height: "auto",
+          aspectRatio: "16/9",
+          objectFit: "contain",
+          maxWidth: "100%",
+          height: "auto"
+        }} />
+      <div className="relative p-3 bg-white">
+        <h3 className="text-xs text-gray-700 group-hover:underline group-hover:underline-offset-4">
+          {productData.name}
+        </h3>
+        <p className="tracking-wider text-gray-900">
+          {productData.description}
+        </p>
+        <p className="mt-2">
+          <span className="sr-only"> Regular Price </span>
+          <span className="tracking-wider text-gray-900">
+            {" "}
+            {productData.price / 100} Zł
+          </span>
+        </p>
       </div>
-      <ProductReviewContainer productData={productData} />
-    </>
-  );
+    </div>
+    <ProductReviewContainer productData={productData} />
+  </>;
 }
 
 type ProductListItem = Pick<
@@ -84,16 +83,17 @@ export function ProductListItem({ data }: ProductListItemProps) {
         <Image
           width={300}
           height={200}
+          src={data.images[0].url}
+          alt={data.name}
+          className="h-[300px] w-full object-cover transition duration-500 group-hover:scale-105 sm:h-[450px]"
           style={{
             maxWidth: "100%",
             height: "auto",
             aspectRatio: "2/3",
             objectFit: "contain",
-          }}
-          src={data.images[0].url}
-          alt={data.name}
-          className="h-[300px] w-full object-cover transition duration-500 group-hover:scale-105 sm:h-[450px]"
-        />
+            maxWidth: "100%",
+            height: "auto"
+          }} />
 
         <div className="relative p-3 bg-white">
           <h3 className="text-xs text-gray-700 group-hover:underline group-hover:underline-offset-4">
