@@ -59,7 +59,7 @@ export default function Navigation() {
                           : ``
                       }`}
                       href={link.path}
-                    >
+                      legacyBehavior>
                       {link.title}
                     </Link>
                   </li>

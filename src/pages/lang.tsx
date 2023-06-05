@@ -10,27 +10,25 @@ const inter = Inter({ subsets: ["latin"] });
 
 export default function LangPage() {
   const router = useRouter();
-  return (
-    <>
-      <Head>
-        <title>Lang</title>
-        <meta name="description" content="O nas" />
-        <meta name="viewport" content="width=device-width, initial-scale=1" />
-        <link rel="icon" href="/favicon.ico" />
-      </Head>
-      <Main>
-        <div>
-          <ul>
-            {router.locales?.map((locale) => (
-              <li key={locale}>
-                <Link locale={locale} href={router.asPath}>
-                  {locale}
-                </Link>
-              </li>
-            ))}
-          </ul>
-        </div>
-      </Main>
-    </>
-  );
+  return <>
+    <Head>
+      <title>Lang</title>
+      <meta name="description" content="O nas" />
+      <meta name="viewport" content="width=device-width, initial-scale=1" />
+      <link rel="icon" href="/favicon.ico" />
+    </Head>
+    <Main>
+      <div>
+        <ul>
+          {router.locales?.map((locale) => (
+            <li key={locale}>
+              <Link locale={locale} href={router.asPath} legacyBehavior>
+                {locale}
+              </Link>
+            </li>
+          ))}
+        </ul>
+      </div>
+    </Main>
+  </>;
 }

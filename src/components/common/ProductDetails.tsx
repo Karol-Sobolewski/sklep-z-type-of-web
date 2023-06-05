@@ -79,7 +79,7 @@ export function ProductListItem({ data }: ProductListItemProps) {
   const cartState = useCartState();
   return (
     <div className="bg-white block overflow-hidden shadow-xl dark:border-gray-800 border-2 rounded-lg duration-500 transition-all hover:shadow-2xl">
-      <Link href={`/wyroby/${data.slug}`} className="group">
+      <Link href={`/wyroby/${data.slug}`} className="group" legacyBehavior>
         <Image
           width={300}
           height={200}

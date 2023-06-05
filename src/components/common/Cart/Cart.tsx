@@ -8,7 +8,7 @@ export default function Cart() {
     <Link
       href="/koszyk"
       className="block border-b-4 border-transparent p-6 hover:border-red-700"
-    >
+      legacyBehavior>
       <div className="inline-flex">
         <svg
           className="h-4 w-4"
