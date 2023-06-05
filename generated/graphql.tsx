@@ -11656,7 +11656,7 @@ export type CreateProductReviewMutationVariables = Exact<{
 }>;
 
 
-export type CreateProductReviewMutation = { __typename?: 'Mutation', createReview?: { __typename?: 'Review', id: string, headline: string, name: string, email: string, content: string, rating?: number | null, createdAt: any, stage: Stage } | null };
+export type CreateProductReviewMutation = { __typename?: 'Mutation', review?: { __typename?: 'Review', id: string, headline: string, name: string, email: string, content: string, rating?: number | null, createdAt: any, stage: Stage } | null };
 
 export type CreateAndPublishNewOrderMutationVariables = Exact<{
   order: OrderCreateInput;
@@ -11775,7 +11775,7 @@ export const OrderContentFragmentDoc = gql`
     `;
 export const CreateProductReviewDocument = gql`
     mutation CreateProductReview($review: ReviewCreateInput!) {
-  createReview(data: $review) {
+  review: createReview(data: $review) {
     ...reviewContent
   }
 }

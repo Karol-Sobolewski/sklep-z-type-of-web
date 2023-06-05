@@ -1,5 +1,5 @@
 mutation CreateProductReview($review: ReviewCreateInput!) {
-  createReview(data: $review) {
+  review: createReview(data: $review) {
     ...reviewContent
   }
 }
