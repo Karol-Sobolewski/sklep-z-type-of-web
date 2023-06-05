@@ -5155,6 +5155,7 @@ export type Order = Node & {
   history: Array<Version>;
   /** The unique identifier */
   id: Scalars['ID'];
+  orderId?: Maybe<Scalars['String']>;
   orderItems: Array<OrderItem>;
   /** The time the document was published. Null on documents in draft stage. */
   publishedAt?: Maybe<Scalars['DateTime']>;
@@ -5163,7 +5164,7 @@ export type Order = Node & {
   scheduledIn: Array<ScheduledOperation>;
   /** System stage field */
   stage: Stage;
-  state?: Maybe<Scalars['String']>;
+  state?: Maybe<OrderStatus>;
   stripeCheckoutId: Scalars['String'];
   total: Scalars['Int'];
   /** The time the document was updated */
@@ -5257,8 +5258,9 @@ export type OrderCreateInput = {
   createdAt?: InputMaybe<Scalars['DateTime']>;
   email: Scalars['String'];
   firstName?: InputMaybe<Scalars['String']>;
+  orderId?: InputMaybe<Scalars['String']>;
   orderItems?: InputMaybe<OrderItemCreateManyInlineInput>;
-  state?: InputMaybe<Scalars['String']>;
+  state?: InputMaybe<OrderStatus>;
   stripeCheckoutId: Scalars['String'];
   total: Scalars['Int'];
   updatedAt?: InputMaybe<Scalars['DateTime']>;
@@ -5300,6 +5302,7 @@ export type OrderItem = Node & {
   /** The unique identifier */
   id: Scalars['ID'];
   order?: Maybe<Order>;
+  orderId?: Maybe<Scalars['String']>;
   product?: Maybe<Product>;
   /** The time the document was published. Null on documents in draft stage. */
   publishedAt?: Maybe<Scalars['DateTime']>;
@@ -5392,6 +5395,7 @@ export type OrderItemConnection = {
 export type OrderItemCreateInput = {
   createdAt?: InputMaybe<Scalars['DateTime']>;
   order?: InputMaybe<OrderCreateOneInlineInput>;
+  orderId?: InputMaybe<Scalars['String']>;
   product?: InputMaybe<ProductCreateOneInlineInput>;
   quantity: Scalars['Int'];
   total: Scalars['Int'];
@@ -5470,6 +5474,25 @@ export type OrderItemManyWhereInput = {
   /** All values starting with the given string. */
   id_starts_with?: InputMaybe<Scalars['ID']>;
   order?: InputMaybe<OrderWhereInput>;
+  orderId?: InputMaybe<Scalars['String']>;
+  /** All values containing the given string. */
+  orderId_contains?: InputMaybe<Scalars['String']>;
+  /** All values ending with the given string. */
+  orderId_ends_with?: InputMaybe<Scalars['String']>;
+  /** All values that are contained in given list. */
+  orderId_in?: InputMaybe<Array<InputMaybe<Scalars['String']>>>;
+  /** Any other value that exists and is not equal to the given value. */
+  orderId_not?: InputMaybe<Scalars['String']>;
+  /** All values not containing the given string. */
+  orderId_not_contains?: InputMaybe<Scalars['String']>;
+  /** All values not ending with the given string */
+  orderId_not_ends_with?: InputMaybe<Scalars['String']>;
+  /** All values that are not contained in given list. */
+  orderId_not_in?: InputMaybe<Array<InputMaybe<Scalars['String']>>>;
+  /** All values not starting with the given string. */
+  orderId_not_starts_with?: InputMaybe<Scalars['String']>;
+  /** All values starting with the given string. */
+  orderId_starts_with?: InputMaybe<Scalars['String']>;
   product?: InputMaybe<ProductWhereInput>;
   publishedAt?: InputMaybe<Scalars['DateTime']>;
   /** All values greater than the given value. */
@@ -5543,6 +5566,8 @@ export enum OrderItemOrderByInput {
   CreatedAtDesc = 'createdAt_DESC',
   IdAsc = 'id_ASC',
   IdDesc = 'id_DESC',
+  OrderIdAsc = 'orderId_ASC',
+  OrderIdDesc = 'orderId_DESC',
   PublishedAtAsc = 'publishedAt_ASC',
   PublishedAtDesc = 'publishedAt_DESC',
   QuantityAsc = 'quantity_ASC',
@@ -5555,6 +5580,7 @@ export enum OrderItemOrderByInput {
 
 export type OrderItemUpdateInput = {
   order?: InputMaybe<OrderUpdateOneInlineInput>;
+  orderId?: InputMaybe<Scalars['String']>;
   product?: InputMaybe<ProductUpdateOneInlineInput>;
   quantity?: InputMaybe<Scalars['Int']>;
   total?: InputMaybe<Scalars['Int']>;
@@ -5680,6 +5706,25 @@ export type OrderItemWhereInput = {
   /** All values starting with the given string. */
   id_starts_with?: InputMaybe<Scalars['ID']>;
   order?: InputMaybe<OrderWhereInput>;
+  orderId?: InputMaybe<Scalars['String']>;
+  /** All values containing the given string. */
+  orderId_contains?: InputMaybe<Scalars['String']>;
+  /** All values ending with the given string. */
+  orderId_ends_with?: InputMaybe<Scalars['String']>;
+  /** All values that are contained in given list. */
+  orderId_in?: InputMaybe<Array<InputMaybe<Scalars['String']>>>;
+  /** Any other value that exists and is not equal to the given value. */
+  orderId_not?: InputMaybe<Scalars['String']>;
+  /** All values not containing the given string. */
+  orderId_not_contains?: InputMaybe<Scalars['String']>;
+  /** All values not ending with the given string */
+  orderId_not_ends_with?: InputMaybe<Scalars['String']>;
+  /** All values that are not contained in given list. */
+  orderId_not_in?: InputMaybe<Array<InputMaybe<Scalars['String']>>>;
+  /** All values not starting with the given string. */
+  orderId_not_starts_with?: InputMaybe<Scalars['String']>;
+  /** All values starting with the given string. */
+  orderId_starts_with?: InputMaybe<Scalars['String']>;
   product?: InputMaybe<ProductWhereInput>;
   publishedAt?: InputMaybe<Scalars['DateTime']>;
   /** All values greater than the given value. */
@@ -5765,6 +5810,7 @@ export type OrderItemWhereStageInput = {
 /** References OrderItem record uniquely */
 export type OrderItemWhereUniqueInput = {
   id?: InputMaybe<Scalars['ID']>;
+  orderId?: InputMaybe<Scalars['String']>;
 };
 
 /** Identifies documents */
@@ -5854,6 +5900,25 @@ export type OrderManyWhereInput = {
   id_not_starts_with?: InputMaybe<Scalars['ID']>;
   /** All values starting with the given string. */
   id_starts_with?: InputMaybe<Scalars['ID']>;
+  orderId?: InputMaybe<Scalars['String']>;
+  /** All values containing the given string. */
+  orderId_contains?: InputMaybe<Scalars['String']>;
+  /** All values ending with the given string. */
+  orderId_ends_with?: InputMaybe<Scalars['String']>;
+  /** All values that are contained in given list. */
+  orderId_in?: InputMaybe<Array<InputMaybe<Scalars['String']>>>;
+  /** Any other value that exists and is not equal to the given value. */
+  orderId_not?: InputMaybe<Scalars['String']>;
+  /** All values not containing the given string. */
+  orderId_not_contains?: InputMaybe<Scalars['String']>;
+  /** All values not ending with the given string */
+  orderId_not_ends_with?: InputMaybe<Scalars['String']>;
+  /** All values that are not contained in given list. */
+  orderId_not_in?: InputMaybe<Array<InputMaybe<Scalars['String']>>>;
+  /** All values not starting with the given string. */
+  orderId_not_starts_with?: InputMaybe<Scalars['String']>;
+  /** All values starting with the given string. */
+  orderId_starts_with?: InputMaybe<Scalars['String']>;
   orderItems_every?: InputMaybe<OrderItemWhereInput>;
   orderItems_none?: InputMaybe<OrderItemWhereInput>;
   orderItems_some?: InputMaybe<OrderItemWhereInput>;
@@ -5876,25 +5941,13 @@ export type OrderManyWhereInput = {
   scheduledIn_every?: InputMaybe<ScheduledOperationWhereInput>;
   scheduledIn_none?: InputMaybe<ScheduledOperationWhereInput>;
   scheduledIn_some?: InputMaybe<ScheduledOperationWhereInput>;
-  state?: InputMaybe<Scalars['String']>;
-  /** All values containing the given string. */
-  state_contains?: InputMaybe<Scalars['String']>;
-  /** All values ending with the given string. */
-  state_ends_with?: InputMaybe<Scalars['String']>;
+  state?: InputMaybe<OrderStatus>;
   /** All values that are contained in given list. */
-  state_in?: InputMaybe<Array<InputMaybe<Scalars['String']>>>;
+  state_in?: InputMaybe<Array<InputMaybe<OrderStatus>>>;
   /** Any other value that exists and is not equal to the given value. */
-  state_not?: InputMaybe<Scalars['String']>;
-  /** All values not containing the given string. */
-  state_not_contains?: InputMaybe<Scalars['String']>;
-  /** All values not ending with the given string */
-  state_not_ends_with?: InputMaybe<Scalars['String']>;
+  state_not?: InputMaybe<OrderStatus>;
   /** All values that are not contained in given list. */
-  state_not_in?: InputMaybe<Array<InputMaybe<Scalars['String']>>>;
-  /** All values not starting with the given string. */
-  state_not_starts_with?: InputMaybe<Scalars['String']>;
-  /** All values starting with the given string. */
-  state_starts_with?: InputMaybe<Scalars['String']>;
+  state_not_in?: InputMaybe<Array<InputMaybe<OrderStatus>>>;
   stripeCheckoutId?: InputMaybe<Scalars['String']>;
   /** All values containing the given string. */
   stripeCheckoutId_contains?: InputMaybe<Scalars['String']>;
@@ -5956,6 +6009,8 @@ export enum OrderOrderByInput {
   FirstNameDesc = 'firstName_DESC',
   IdAsc = 'id_ASC',
   IdDesc = 'id_DESC',
+  OrderIdAsc = 'orderId_ASC',
+  OrderIdDesc = 'orderId_DESC',
   PublishedAtAsc = 'publishedAt_ASC',
   PublishedAtDesc = 'publishedAt_DESC',
   StateAsc = 'state_ASC',
@@ -5968,12 +6023,21 @@ export enum OrderOrderByInput {
   UpdatedAtDesc = 'updatedAt_DESC'
 }
 
+export enum OrderStatus {
+  Canceled = 'Canceled',
+  Finished = 'Finished',
+  Payed = 'Payed',
+  Shipped = 'Shipped',
+  Waiting = 'Waiting'
+}
+
 export type OrderUpdateInput = {
   account?: InputMaybe<AccountUpdateOneInlineInput>;
   email?: InputMaybe<Scalars['String']>;
   firstName?: InputMaybe<Scalars['String']>;
+  orderId?: InputMaybe<Scalars['String']>;
   orderItems?: InputMaybe<OrderItemUpdateManyInlineInput>;
-  state?: InputMaybe<Scalars['String']>;
+  state?: InputMaybe<OrderStatus>;
   stripeCheckoutId?: InputMaybe<Scalars['String']>;
   total?: InputMaybe<Scalars['Int']>;
 };
@@ -5998,7 +6062,7 @@ export type OrderUpdateManyInlineInput = {
 export type OrderUpdateManyInput = {
   email?: InputMaybe<Scalars['String']>;
   firstName?: InputMaybe<Scalars['String']>;
-  state?: InputMaybe<Scalars['String']>;
+  state?: InputMaybe<OrderStatus>;
   stripeCheckoutId?: InputMaybe<Scalars['String']>;
   total?: InputMaybe<Scalars['Int']>;
 };
@@ -6139,6 +6203,25 @@ export type OrderWhereInput = {
   id_not_starts_with?: InputMaybe<Scalars['ID']>;
   /** All values starting with the given string. */
   id_starts_with?: InputMaybe<Scalars['ID']>;
+  orderId?: InputMaybe<Scalars['String']>;
+  /** All values containing the given string. */
+  orderId_contains?: InputMaybe<Scalars['String']>;
+  /** All values ending with the given string. */
+  orderId_ends_with?: InputMaybe<Scalars['String']>;
+  /** All values that are contained in given list. */
+  orderId_in?: InputMaybe<Array<InputMaybe<Scalars['String']>>>;
+  /** Any other value that exists and is not equal to the given value. */
+  orderId_not?: InputMaybe<Scalars['String']>;
+  /** All values not containing the given string. */
+  orderId_not_contains?: InputMaybe<Scalars['String']>;
+  /** All values not ending with the given string */
+  orderId_not_ends_with?: InputMaybe<Scalars['String']>;
+  /** All values that are not contained in given list. */
+  orderId_not_in?: InputMaybe<Array<InputMaybe<Scalars['String']>>>;
+  /** All values not starting with the given string. */
+  orderId_not_starts_with?: InputMaybe<Scalars['String']>;
+  /** All values starting with the given string. */
+  orderId_starts_with?: InputMaybe<Scalars['String']>;
   orderItems_every?: InputMaybe<OrderItemWhereInput>;
   orderItems_none?: InputMaybe<OrderItemWhereInput>;
   orderItems_some?: InputMaybe<OrderItemWhereInput>;
@@ -6161,25 +6244,13 @@ export type OrderWhereInput = {
   scheduledIn_every?: InputMaybe<ScheduledOperationWhereInput>;
   scheduledIn_none?: InputMaybe<ScheduledOperationWhereInput>;
   scheduledIn_some?: InputMaybe<ScheduledOperationWhereInput>;
-  state?: InputMaybe<Scalars['String']>;
-  /** All values containing the given string. */
-  state_contains?: InputMaybe<Scalars['String']>;
-  /** All values ending with the given string. */
-  state_ends_with?: InputMaybe<Scalars['String']>;
+  state?: InputMaybe<OrderStatus>;
   /** All values that are contained in given list. */
-  state_in?: InputMaybe<Array<InputMaybe<Scalars['String']>>>;
+  state_in?: InputMaybe<Array<InputMaybe<OrderStatus>>>;
   /** Any other value that exists and is not equal to the given value. */
-  state_not?: InputMaybe<Scalars['String']>;
-  /** All values not containing the given string. */
-  state_not_contains?: InputMaybe<Scalars['String']>;
-  /** All values not ending with the given string */
-  state_not_ends_with?: InputMaybe<Scalars['String']>;
+  state_not?: InputMaybe<OrderStatus>;
   /** All values that are not contained in given list. */
-  state_not_in?: InputMaybe<Array<InputMaybe<Scalars['String']>>>;
-  /** All values not starting with the given string. */
-  state_not_starts_with?: InputMaybe<Scalars['String']>;
-  /** All values starting with the given string. */
-  state_starts_with?: InputMaybe<Scalars['String']>;
+  state_not_in?: InputMaybe<Array<InputMaybe<OrderStatus>>>;
   stripeCheckoutId?: InputMaybe<Scalars['String']>;
   /** All values containing the given string. */
   stripeCheckoutId_contains?: InputMaybe<Scalars['String']>;
@@ -6249,6 +6320,7 @@ export type OrderWhereStageInput = {
 /** References Order record uniquely */
 export type OrderWhereUniqueInput = {
   id?: InputMaybe<Scalars['ID']>;
+  orderId?: InputMaybe<Scalars['String']>;
 };
 
 /** Information about pagination in a connection. */
@@ -11584,14 +11656,15 @@ export type CreateProductReviewMutationVariables = Exact<{
 }>;
 
 
-export type CreateProductReviewMutation = { __typename?: 'Mutation', review?: { __typename?: 'Review', id: string, headline: string, name: string, email: string, content: string, rating?: number | null, createdAt: any, stage: Stage } | null };
+export type CreateProductReviewMutation = { __typename?: 'Mutation', createReview?: { __typename?: 'Review', id: string, headline: string, name: string, email: string, content: string, rating?: number | null, createdAt: any, stage: Stage } | null };
 
-export type CreateNewOrderMutationVariables = Exact<{
+export type CreateAndPublishNewOrderMutationVariables = Exact<{
   order: OrderCreateInput;
+  orderId: Scalars['String'];
 }>;
 
 
-export type CreateNewOrderMutation = { __typename?: 'Mutation', order?: { __typename?: 'Order', id: string, stage: Stage, total: number, stripeCheckoutId: string } | null };
+export type CreateAndPublishNewOrderMutation = { __typename?: 'Mutation', createOrder?: { __typename?: 'Order', id: string, stage: Stage, total: number, stripeCheckoutId: string } | null, publishOrder?: { __typename?: 'Order', id: string } | null };
 
 export type CreateAccountMutationVariables = Exact<{
   email: Scalars['String'];
@@ -11618,7 +11691,7 @@ export type GetProductsSlugQuery = { __typename?: 'Query', products: Array<{ __t
 
 export type ReviewContentFragment = { __typename?: 'Review', id: string, headline: string, name: string, email: string, content: string, rating?: number | null, createdAt: any, stage: Stage };
 
-export type OrderContentFragment = { __typename?: 'Order', id: string, total: number, state?: string | null };
+export type OrderContentFragment = { __typename?: 'Order', id: string, total: number, state?: OrderStatus | null };
 
 export type ProductImageFragment = { __typename?: 'Asset', url: string, height?: number | null, width?: number | null };
 
@@ -11660,7 +11733,7 @@ export type GetOrdersForAccountQueryVariables = Exact<{
 }>;
 
 
-export type GetOrdersForAccountQuery = { __typename?: 'Query', account?: { __typename?: 'Account', id: string, orders: Array<{ __typename?: 'Order', id: string, stripeCheckoutId: string, state?: string | null, orderItems: Array<{ __typename?: 'OrderItem', id: string, product?: { __typename?: 'Product', id: string, name: string, price: number, images: Array<{ __typename?: 'Asset', id: string, url: string }> } | null }> }> } | null };
+export type GetOrdersForAccountQuery = { __typename?: 'Query', account?: { __typename?: 'Account', id: string, orders: Array<{ __typename?: 'Order', id: string, stripeCheckoutId: string, state?: OrderStatus | null, total: number, createdAt: any, orderItems: Array<{ __typename?: 'OrderItem', id: string, product?: { __typename?: 'Product', id: string, name: string, price: number, images: Array<{ __typename?: 'Asset', id: string, url: string }> } | null }> }> } | null };
 
 export const ProductImageFragmentDoc = gql`
     fragment ProductImage on Asset {
@@ -11702,7 +11775,7 @@ export const OrderContentFragmentDoc = gql`
     `;
 export const CreateProductReviewDocument = gql`
     mutation CreateProductReview($review: ReviewCreateInput!) {
-  review: createReview(data: $review) {
+  createReview(data: $review) {
     ...reviewContent
   }
 }
@@ -11733,42 +11806,46 @@ export function useCreateProductReviewMutation(baseOptions?: Apollo.MutationHook
 export type CreateProductReviewMutationHookResult = ReturnType<typeof useCreateProductReviewMutation>;
 export type CreateProductReviewMutationResult = Apollo.MutationResult<CreateProductReviewMutation>;
 export type CreateProductReviewMutationOptions = Apollo.BaseMutationOptions<CreateProductReviewMutation, CreateProductReviewMutationVariables>;
-export const CreateNewOrderDocument = gql`
-    mutation CreateNewOrder($order: OrderCreateInput!) {
-  order: createOrder(data: $order) {
+export const CreateAndPublishNewOrderDocument = gql`
+    mutation CreateAndPublishNewOrder($order: OrderCreateInput!, $orderId: String!) {
+  createOrder(data: $order) {
     id
     stage
     total
     stripeCheckoutId
   }
+  publishOrder(where: {orderId: $orderId}, to: PUBLISHED) {
+    id
+  }
 }
     `;
-export type CreateNewOrderMutationFn = Apollo.MutationFunction<CreateNewOrderMutation, CreateNewOrderMutationVariables>;
+export type CreateAndPublishNewOrderMutationFn = Apollo.MutationFunction<CreateAndPublishNewOrderMutation, CreateAndPublishNewOrderMutationVariables>;
 
 /**
- * __useCreateNewOrderMutation__
+ * __useCreateAndPublishNewOrderMutation__
  *
- * To run a mutation, you first call `useCreateNewOrderMutation` within a React component and pass it any options that fit your needs.
- * When your component renders, `useCreateNewOrderMutation` returns a tuple that includes:
+ * To run a mutation, you first call `useCreateAndPublishNewOrderMutation` within a React component and pass it any options that fit your needs.
+ * When your component renders, `useCreateAndPublishNewOrderMutation` returns a tuple that includes:
  * - A mutate function that you can call at any time to execute the mutation
  * - An object with fields that represent the current status of the mutation's execution
  *
  * @param baseOptions options that will be passed into the mutation, supported options are listed on: https://www.apollographql.com/docs/react/api/react-hooks/#options-2;
  *
  * @example
- * const [createNewOrderMutation, { data, loading, error }] = useCreateNewOrderMutation({
+ * const [createAndPublishNewOrderMutation, { data, loading, error }] = useCreateAndPublishNewOrderMutation({
  *   variables: {
  *      order: // value for 'order'
+ *      orderId: // value for 'orderId'
  *   },
  * });
  */
-export function useCreateNewOrderMutation(baseOptions?: Apollo.MutationHookOptions<CreateNewOrderMutation, CreateNewOrderMutationVariables>) {
+export function useCreateAndPublishNewOrderMutation(baseOptions?: Apollo.MutationHookOptions<CreateAndPublishNewOrderMutation, CreateAndPublishNewOrderMutationVariables>) {
         const options = {...defaultOptions, ...baseOptions}
-        return Apollo.useMutation<CreateNewOrderMutation, CreateNewOrderMutationVariables>(CreateNewOrderDocument, options);
+        return Apollo.useMutation<CreateAndPublishNewOrderMutation, CreateAndPublishNewOrderMutationVariables>(CreateAndPublishNewOrderDocument, options);
       }
-export type CreateNewOrderMutationHookResult = ReturnType<typeof useCreateNewOrderMutation>;
-export type CreateNewOrderMutationResult = Apollo.MutationResult<CreateNewOrderMutation>;
-export type CreateNewOrderMutationOptions = Apollo.BaseMutationOptions<CreateNewOrderMutation, CreateNewOrderMutationVariables>;
+export type CreateAndPublishNewOrderMutationHookResult = ReturnType<typeof useCreateAndPublishNewOrderMutation>;
+export type CreateAndPublishNewOrderMutationResult = Apollo.MutationResult<CreateAndPublishNewOrderMutation>;
+export type CreateAndPublishNewOrderMutationOptions = Apollo.BaseMutationOptions<CreateAndPublishNewOrderMutation, CreateAndPublishNewOrderMutationVariables>;
 export const CreateAccountDocument = gql`
     mutation CreateAccount($email: String!, $password: String!) {
   createAccount(data: {email: $email, password: $password}) {
@@ -12087,6 +12164,8 @@ export const GetOrdersForAccountDocument = gql`
       id
       stripeCheckoutId
       state
+      total
+      createdAt
       orderItems {
         id
         product {

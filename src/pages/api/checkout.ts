@@ -8,6 +8,8 @@ import {
 } from "../../../generated/graphql";
 
 const checkoutHandler: NextApiHandler = async (req, res) => {
+  //TODO: Edge Api Route
+
   const stripeSecretKey = process.env.STRIPE_SECRET_KEY;
 
   if (!stripeSecretKey) {

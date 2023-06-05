@@ -8,6 +8,8 @@ import {
 import { apolloClient, authApolloClient } from "@/graphql/apolloClient";
 
 const SignUpHandler: NextApiHandler = async (req, res) => {
+  //TODO: Edge Api Route
+
   const { email, password } = req.body;
   //   const crypto = require("crypto");
   //   const hash = await crypto.createHash("sha256", password).digest("hex");

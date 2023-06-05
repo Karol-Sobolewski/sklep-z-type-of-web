@@ -7,14 +7,19 @@ import { setLocale } from "yup";
 const { v4: uuidv4 } = require("uuid");
 
 import { useCartState } from "./Cart/CartContext";
-import { useCreateNewOrderMutation } from "../../../generated/graphql";
+import {
+  OrderStatus,
+  Stage,
+  useCreateAndPublishNewOrderMutation,
+} from "../../../generated/graphql";
 import Loading from "./Loading";
 import { useRouter } from "next/navigation";
 import { useSession } from "next-auth/react";
 
 export default function CheckoutForm() {
   const cartState = useCartState();
-  const [createOrder, { data, loading, error }] = useCreateNewOrderMutation();
+  const [CreateAndPublishNewOrderMutation, { data, loading, error }] =
+    useCreateAndPublishNewOrderMutation();
   const { push } = useRouter();
   const checkoutFormSchema = yup
     .object({
@@ -58,14 +63,16 @@ export default function CheckoutForm() {
     });
 
   const session = useSession();
-
+  const orderId = uuidv4();
   const onSubmit = handleSubmit((data) => {
-    createOrder({
+    CreateAndPublishNewOrderMutation({
       variables: {
         order: {
+          orderId: orderId,
           stripeCheckoutId: uuidv4(),
           email: data.email,
           total: cartState.orderSummary.totalPrice,
+          state: OrderStatus.Waiting,
           orderItems: {
             create: cartState.items.map((item) => ({
               quantity: item.qty,
@@ -83,6 +90,7 @@ export default function CheckoutForm() {
             },
           },
         },
+        orderId: orderId,
       },
     });
   });

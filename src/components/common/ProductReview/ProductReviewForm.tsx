@@ -11,6 +11,7 @@ import {
 import { useForm } from "react-hook-form";
 import { useEffect } from "react";
 import Loading from "../Loading";
+const { v4: uuidv4 } = require("uuid");
 
 interface ProductReviewFormProps {
   productId: string;

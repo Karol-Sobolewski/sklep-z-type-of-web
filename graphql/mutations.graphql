@@ -1,15 +1,21 @@
 mutation CreateProductReview($review: ReviewCreateInput!) {
-  review: createReview(data: $review) {
+  createReview(data: $review) {
     ...reviewContent
   }
 }
 
-mutation CreateNewOrder($order: OrderCreateInput!) {
-  order: createOrder(data: $order) {
+mutation CreateAndPublishNewOrder(
+  $order: OrderCreateInput!
+  $orderId: String!
+) {
+  createOrder(data: $order) {
     id
     stage
     total
     stripeCheckoutId
+  }
+  publishOrder(where: { orderId: $orderId }, to: PUBLISHED) {
+    id
   }
 }
 

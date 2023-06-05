@@ -20,6 +20,10 @@ const nextConfig = {
     domains: [`naszsklep-api.vercel.app`, `media.graphassets.com`],
     formats: ["image/avif", "image/webp"],
   },
+  i18n: {
+    locales: ["pl", "en"],
+    defaultLocale: "pl",
+  }
 };
 
 module.exports = nextConfig;

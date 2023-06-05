@@ -112,6 +112,8 @@ query GetOrdersForAccount($email: String!) {
       id
       stripeCheckoutId
       state
+      total
+      createdAt
       orderItems {
         id
         product {
