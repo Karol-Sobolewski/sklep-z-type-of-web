@@ -7,6 +7,9 @@ fragment productContent on Product {
   images(first: 1) {
     ...ProductImage
   }
+  reviews {
+    ...reviewContent
+  }
 }
 
 query GetProductsList($first: Int, $skip: Int) {

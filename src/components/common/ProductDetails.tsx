@@ -9,25 +9,6 @@ import {
 import AddProductToCart from "./Cart/AddProductToCartButton";
 import ProductReviewContainer from "./ProductReview/ProductReviewContainer";
 
-// interface ProductDetails {
-//   id: string;
-//   slug: string;
-//   name: string;
-//   description: string;
-//   price: number;
-//   images: Images[];
-//   reviews: ReviewContentFragment[];
-// }
-
-// // TODO: import fragmentu schema
-
-// interface Images {
-//   __typename?: "Asset" | undefined;
-//   url: string;
-//   height?: number | null | undefined;
-//   width?: number | null | undefined;
-// }
-
 interface ProductProps {
   productData: ProductContentFragment;
 }
@@ -38,7 +19,6 @@ export default function ProductDetails({ productData }: ProductProps) {
       <div className="bg-white block overflow-hidden group shadow-xl dark:border-gray-800 border-2 rounded-lg duration-500 transition-all hover:shadow-2xl">
         <Image
           width={300}
-          // width={productData.images[0].width}
           height={200}
           src={productData.images[0].url}
           alt={productData.name}
@@ -48,8 +28,6 @@ export default function ProductDetails({ productData }: ProductProps) {
             height: "auto",
             aspectRatio: "16/9",
             objectFit: "contain",
-            maxWidth: "100%",
-            height: "auto",
           }}
         />
         <div className="relative p-3 bg-white">
@@ -66,6 +44,7 @@ export default function ProductDetails({ productData }: ProductProps) {
               {productData.price / 100} Zł
             </span>
           </p>
+          <AddProductToCart data={productData} />
         </div>
       </div>
       {/* <ProductReviewContainer productData={productData} /> */}
@@ -83,7 +62,6 @@ interface ProductListItemProps {
 }
 
 export function ProductListItem({ data }: ProductListItemProps) {
-  // const cartState = useCartState();
   return (
     <div className="bg-white block overflow-hidden shadow-xl dark:border-gray-800 border-2 rounded-lg duration-500 transition-all hover:shadow-2xl">
       <a href={`/wyroby/${data.slug}`} className="group">

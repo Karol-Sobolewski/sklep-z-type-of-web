@@ -11,9 +11,11 @@ type ProductListItem = Pick<
   "id" | "slug" | "name" | "images" | "price"
 >;
 
-export default function AddProductToCart(data: ProductListItem) {
+export default function AddProductToCart({ data }: { data: ProductListItem }) {
   const cartState = useCartState();
-  console.log(data);
+  if (!data) {
+    return null;
+  }
   return (
     <button
       type="button"
@@ -21,7 +23,7 @@ export default function AddProductToCart(data: ProductListItem) {
         cartState.addItemToCart({
           id: data.id,
           slug: data.slug,
-          image: "https://media.graphassets.com/Rd4ObmSXqogF1q1kfUlQ",
+          image: data.images[0].url,
           name: data.name,
           price: data.price,
           qty: 1,

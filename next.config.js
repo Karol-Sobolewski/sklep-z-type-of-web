@@ -7,6 +7,8 @@ const nextConfig = {
   experimental: {
     gzipSize: true,
     appDir: true,
+    workerThreads: false,
+    cpus: 1
   },
   async redirects() {
     return [

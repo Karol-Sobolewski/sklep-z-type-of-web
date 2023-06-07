@@ -11674,7 +11674,7 @@ export type CreateAccountMutationVariables = Exact<{
 
 export type CreateAccountMutation = { __typename?: 'Mutation', createAccount?: { __typename?: 'Account', id: string } | null };
 
-export type ProductContentFragment = { __typename?: 'Product', id: string, slug: string, name: string, price: number, description: string, images: Array<{ __typename?: 'Asset', url: string, height?: number | null, width?: number | null }> };
+export type ProductContentFragment = { __typename?: 'Product', id: string, slug: string, name: string, price: number, description: string, images: Array<{ __typename?: 'Asset', url: string, height?: number | null, width?: number | null }>, reviews: Array<{ __typename?: 'Review', id: string, headline: string, name: string, email: string, content: string, rating?: number | null, createdAt: any, stage: Stage }> };
 
 export type GetProductsListQueryVariables = Exact<{
   first?: InputMaybe<Scalars['Int']>;
@@ -11742,18 +11742,6 @@ export const ProductImageFragmentDoc = gql`
   width
 }
     `;
-export const ProductContentFragmentDoc = gql`
-    fragment productContent on Product {
-  id
-  slug
-  name
-  price
-  description
-  images(first: 1) {
-    ...ProductImage
-  }
-}
-    ${ProductImageFragmentDoc}`;
 export const ReviewContentFragmentDoc = gql`
     fragment reviewContent on Review {
   id
@@ -11766,6 +11754,22 @@ export const ReviewContentFragmentDoc = gql`
   stage
 }
     `;
+export const ProductContentFragmentDoc = gql`
+    fragment productContent on Product {
+  id
+  slug
+  name
+  price
+  description
+  images(first: 1) {
+    ...ProductImage
+  }
+  reviews {
+    ...reviewContent
+  }
+}
+    ${ProductImageFragmentDoc}
+${ReviewContentFragmentDoc}`;
 export const OrderContentFragmentDoc = gql`
     fragment orderContent on Order {
   id

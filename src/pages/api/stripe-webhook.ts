@@ -2,11 +2,11 @@ import { NextApiHandler, PageConfig } from "next";
 import Stripe from "stripe";
 import { StripeWebhookEvents } from "../../../stripeEvents";
 import { authApolloClient } from "@/graphql/apolloClient";
-import {
-  CreateNewOrderDocument,
-  CreateNewOrderMutation,
-  CreateNewOrderMutationVariables,
-} from "../../../generated/graphql";
+// import {
+//   CreateNewOrderDocument,
+//   CreateNewOrderMutation,
+//   CreateNewOrderMutationVariables,
+// } from "../../../generated/graphql";
 import { Readable } from "stream";
 
 const stripeWebhook: NextApiHandler = async (req, res) => {
@@ -58,20 +58,20 @@ const stripeWebhook: NextApiHandler = async (req, res) => {
       //TODO: zaktualizuj zamówienie w hygraph
       console.log(`Zaktualizuj zamówienie`);
 
-      await authApolloClient.mutate<
-        CreateNewOrderMutation,
-        CreateNewOrderMutationVariables
-      >({
-        mutation: CreateNewOrderDocument,
-        variables: {
-          order: {
-            email: "",
-            stripeCheckoutId: req.body.data.object.id,
-            total: req.body.data.object.amount,
-            // state: "Opłacono",
-          },
-        },
-      });
+      // await authApolloClient.mutate<
+      //   CreateNewOrderMutation,
+      //   CreateNewOrderMutationVariables
+      // >({
+      //   mutation: CreateNewOrderDocument,
+      //   variables: {
+      //     order: {
+      //       email: "",
+      //       stripeCheckoutId: req.body.data.object.id,
+      //       total: req.body.data.object.amount,
+      //       // state: "Opłacono",
+      //     },
+      //   },
+      // });
 
       res.json({ received: true });
       return;
