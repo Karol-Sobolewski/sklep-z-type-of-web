@@ -1,29 +1,30 @@
 import Head from "next/head";
 import Image from "next/image";
 import { Inter } from "next/font/google";
-import Main from "@/components/layout/Main";
+import Main from "@/components/layout/_Main";
 import Pagination from "@/components/common/Pagination";
 
 import { ProductListItem } from "@/components/common/ProductDetails";
 import { InferGetStaticPropsType } from "next";
-import { useState } from "react";
+// import { useState } from "react";
+
 import { useRouter } from "next/router";
-import { gql } from "@apollo/client";
+import { GetProductsListDocument } from "../../../generated/graphql";
 import { apolloClient } from "@/graphql/apolloClient";
+export default async function ProductsPage() {
+  //   const router = useRouter();
+  const { data } = await apolloClient.query<GetProductsListResponse>({
+    query: GetProductsListDocument,
+  });
 
-export default function ProductsPage({
-  data,
-}: InferGetStaticPropsType<typeof getStaticProps>) {
-  const router = useRouter();
-
-  const [currentPage, setCurrentPage] = useState(1);
-  const pageNumberLimit = 5;
-  const [maxPageLimit, setMaxPageLimit] = useState(5);
-  const [minPageLimit, setMinPageLimit] = useState(0);
-  const paginate = (pageNumber: any) => {
-    setCurrentPage(pageNumber);
-    router.push(`wyroby/strona/${pageNumber}`);
-  };
+  //   const [currentPage, setCurrentPage] = useState(1);
+  //   const pageNumberLimit = 5;
+  //   const [maxPageLimit, setMaxPageLimit] = useState(5);
+  //   const [minPageLimit, setMinPageLimit] = useState(0);
+  //   const paginate = (pageNumber: any) => {
+  //     setCurrentPage(pageNumber);
+  //     router.push(`wyroby/strona/${pageNumber}`);
+  //   };
 
   return (
     <>
@@ -60,66 +61,37 @@ export default function ProductsPage({
               </li>
             ))}
           </ul>
-          <Pagination
+          {/* <Pagination
             currentPage={currentPage}
             paginate={paginate}
             totalPages={10}
             minPageLimit={minPageLimit}
             maxPageLimit={maxPageLimit}
-          />
+          /> */}
         </div>
       </Main>
     </>
   );
 }
 
-export const getStaticProps = async () => {
-  const { data } = await apolloClient.query<GetProductsListResponse>({
-    query: gql`
-      query GetProductsList {
-        products {
-          id
-          slug
-          name
-          price
-          images(first: 1) {
-            url
-            height
-            width
-          }
-        }
-      }
-    `,
-  });
+// export interface StoreApiResponse {
+//   id: string;
+//   title: string;
+//   price: number;
+//   description: string;
+//   image: string;
+//   creationAt: string;
+//   updatedAt: string;
+//   category: Category;
+// }
 
-  // const res = await fetch(`https://naszsklep-api.vercel.app/api/products`);
-  // const data: StoreApiResponse[] = await res.json();
-
-  return {
-    props: {
-      data,
-    },
-  };
-};
-
-export interface StoreApiResponse {
-  id: string;
-  title: string;
-  price: number;
-  description: string;
-  image: string;
-  creationAt: string;
-  updatedAt: string;
-  category: Category;
-}
-
-export interface Category {
-  id: number;
-  name: string;
-  image: string;
-  creationAt: string;
-  updatedAt: string;
-}
+// export interface Category {
+//   id: number;
+//   name: string;
+//   image: string;
+//   creationAt: string;
+//   updatedAt: string;
+// }
 
 export interface GetProductsListResponse {
   products: Product[];

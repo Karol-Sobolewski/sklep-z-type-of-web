@@ -1,7 +1,7 @@
 import Head from "next/head";
 import Image from "next/image";
 import Link from "next/link";
-import Main from "@/components/layout/Main";
+import Main from "@/components/layout/_Main";
 import { useCartState } from "@/components/common/Cart/CartContext";
 import { loadStripe } from "@stripe/stripe-js";
 import Stripe from "stripe";

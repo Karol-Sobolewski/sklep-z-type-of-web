@@ -1,6 +1,6 @@
 import Cart from "@/components/common/Cart/Cart";
 import Link from "next/link";
-import { useRouter } from "next/router";
+import { usePathname } from "next/navigation";
 import { useSession, signIn, signOut } from "next-auth/react";
 
 const menu = [
@@ -11,8 +11,9 @@ const menu = [
 ];
 
 export default function Navigation() {
-  const router = useRouter();
-  const session = useSession();
+  "use client";
+  // const pathname = usePathname();
+  // const session = useSession();
 
   return (
     <div className="flex h-16 items-center justify-center px-4 py-2">
@@ -53,13 +54,14 @@ export default function Navigation() {
                 return (
                   <li key={index}>
                     <Link
-                      className={` hover:text-red-800  ${
-                        router.pathname !== `/` && router.pathname === link.path
-                          ? `  border-red-800 text-red-800`
-                          : ``
-                      }`}
+                      // className={` hover:text-red-800  ${
+                      //   pathname !== `/` && pathname === link.path
+                      //     ? `  border-red-800 text-red-800`
+                      //     : ``
+                      // }`}
                       href={link.path}
-                      legacyBehavior>
+                      legacyBehavior
+                    >
                       {link.title}
                     </Link>
                   </li>
@@ -72,7 +74,7 @@ export default function Navigation() {
             <div className="flex items-center divide-x divide-gray-100 border-x border-gray-100">
               <Cart />
 
-              <span>
+              {/* <span>
                 <a
                   href={
                     session.status === "authenticated" ? `/konto` : `/login`
@@ -96,7 +98,7 @@ export default function Navigation() {
 
                   <span className="sr-only"> Konto </span>
                 </a>
-              </span>
+              </span> */}
 
               <span className="hidden sm:block">
                 <a
@@ -121,7 +123,7 @@ export default function Navigation() {
                   <span className="sr-only"> Search </span>
                 </a>
               </span>
-              {session.status === "authenticated" ? (
+              {/* {session.status === "authenticated" ? (
                 <span className="hidden sm:block">
                   <button
                     onClick={() => signOut({ callbackUrl: `/` })}
@@ -145,7 +147,7 @@ export default function Navigation() {
                     <span className="sr-only"> Wyloguj </span>
                   </button>
                 </span>
-              ) : null}
+              ) : null} */}
             </div>
           </div>
         </div>

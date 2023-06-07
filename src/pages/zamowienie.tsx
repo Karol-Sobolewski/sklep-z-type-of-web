@@ -1,7 +1,7 @@
 import Head from "next/head";
 import Image from "next/image";
 import Link from "next/link";
-import Main from "@/components/layout/Main";
+import Main from "@/components/layout/_Main";
 import CheckoutForm from "@/components/common/CheckoutForm";
 
 export default function CheckoutPage() {

@@ -6,6 +6,7 @@ const nextConfig = {
   optimizeFonts: true,
   experimental: {
     gzipSize: true,
+    appDir: true,
   },
   async redirects() {
     return [
@@ -19,10 +20,6 @@ const nextConfig = {
   images: {
     domains: [`naszsklep-api.vercel.app`, `media.graphassets.com`],
     formats: ["image/avif", "image/webp"],
-  },
-  i18n: {
-    locales: ["pl", "en"],
-    defaultLocale: "pl",
   }
 };
 

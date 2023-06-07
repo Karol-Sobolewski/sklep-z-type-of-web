@@ -1,5 +1,5 @@
 import Head from "next/head";
-import Main from "@/components/layout/Main";
+import Main from "@/components/layout/_Main";
 import { useForm } from "react-hook-form";
 import * as yup from "yup";
 import { yupResolver } from "@hookform/resolvers/yup";

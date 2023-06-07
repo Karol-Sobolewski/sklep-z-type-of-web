@@ -1,4 +1,4 @@
-import Main from "../layout/Main";
+import Main from "../layout/_Main";
 
 export default function Loading() {
   return (

@@ -1,4 +1,4 @@
-import Main from "../layout/Main";
+import Main from "../layout/_Main";
 
 const renderSkeleton = (j: number) => {
   let content = [];

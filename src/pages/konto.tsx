@@ -1,7 +1,7 @@
 import Head from "next/head";
 import { Inter } from "next/font/google";
 import Link from "next/link";
-import Main from "@/components/layout/Main";
+import Main from "@/components/layout/_Main";
 import { useSession, signIn, signOut } from "next-auth/react";
 import { useRouter } from "next/router";
 import { useGetOrdersForAccountQuery } from "../../generated/graphql";
