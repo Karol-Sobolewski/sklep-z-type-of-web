@@ -33,7 +33,6 @@ export default function NewsletterForm() {
     useAddToNewsletterMutation();
 
   const onSubmit = handleSubmit((data) => {
-    console.log("data", data);
     // fetch("http://localhost:3000/api/hello/", {
     //   method: "POST",
     //   headers: { "Content-Type": "application/json" },
